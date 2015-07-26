@@ -1,0 +1,42 @@
+{
+  "name": "nayar",
+  "description": "library and API wrapper for Layar webservices providing POI data for geo and vision layers",
+  "version": "0.1.0",
+  "homepage": "https://github.com/thomasrstorey/nayar",
+  "author": {
+    "name": "thomasrstorey",
+    "email": "storey.thomas@gmail.com",
+    "url": "thomasrstorey.net"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/thomasrstorey/nayar.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thomasrstorey/nayar/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/thomasrstorey/nayar/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "lib/nayar",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt nodeunit"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.6.4",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt": "~0.4.5"
+  },
+  "keywords": [],
+  "dependencies": {
+    "lodash": "^3.10.0",
+    "mysql": "^2.8.0"
+  }
+}
