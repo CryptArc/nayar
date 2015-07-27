@@ -1,7 +1,20 @@
 'use strict';
 
 var nayar = require('../lib/nayar.js');
-
+var query = {};
+var expected = {};
+var defaultConfig = {
+  host : 'localhost',
+  user : 'root',
+  password : 'pass'
+};
+var customConfig = {
+  host : '127.0.0.1',
+  user : 'travis',
+  password : '',
+  port : 3306,
+  database : 'nayar_test'
+};
 /*
   ======== A Handy Little Nodeunit Reference ========
   https://github.com/caolan/nodeunit
@@ -22,15 +35,52 @@ var nayar = require('../lib/nayar.js');
     test.ifError(value)
 */
 
-exports['awesome'] = {
+exports['getGeoPOIs'] = {
   setUp: function(done) {
     // setup here
+    // http://devAPI.example.com/getPOIs/?countryCode=IN&lon=4.887339 &userId=ed
+    // 48067cda8e1b985dbb8ff3653a2da4fd490a37 &radius=6245&lat=52.377544&layerNa
+    // me=snowy4&accuracy=100
+    query = {
+      lang : "en",
+      countryCode : "US",
+      lat : 40.692842,
+      lon : -73.931183,
+      userId : "ed48067cda8e1b985dbb8ff3653a2da4fd490a37",
+      radius : 250,
+      layerName : "nayartest",
+      version : "6.0",
+      action : "refresh",
+      accuracy : 100
+    };
+    expectedResponse = {
+      "hotspots": [{
+        "id": "geo_test_1",
+        "anchor": { "geolocation": { "lat": 40.692842, "lon": -73.931183 } },
+        "text": {
+          "title": "nayar test",
+          "description": "nayar testing",
+          "footnote": "test for nayar" },
+          "imageURL": "http:\/\/trstorey.sysreturn.net\/lib\/img\/bioav.png"
+        }],
+        "layer": "nayartest",
+        "errorString": "ok",
+        "errorCode": 0
+    };
     done();
   },
   'no args': function(test) {
-    test.expect(1);
+    test.expect(4);
     // tests here
-    test.equal(nayar.awesome(), 'awesome', 'should be awesome.');
+    test.deepEqual(nayar.getConfig(), defaultConfig, 'should have default config');
+
+    nayar.setConfig(customConfig);
+    test.deepEqual(nayar.getConfig(), customConfig, 'config should be customizable');
+
+    test.setConfig();
+    test.deepEqual(nayar.getConfig(), defaultConfig, 'setting config with no args should set to default');
+
+    test.deepEqual(nayar.getGeoPOIs(query), expectedResponse, 'should get GeoPOIs from the mysql database');
     test.done();
   },
 };

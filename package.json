@@ -36,6 +36,7 @@
   },
   "keywords": [],
   "dependencies": {
+    "geolib": "^2.0.17",
     "lodash": "^3.10.0",
     "mysql": "^2.8.0"
   }

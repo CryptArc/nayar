@@ -3,6 +3,6 @@ node_js:
   - 0.12
 before_script:
   - npm install -g grunt-cli
-  - mysql -e 'create database nayar_test; create table nayar_test.POI (id varchar(255),footnote varchar(150),title varchar(150),lat decimal(13,10),lon decimal(13,10),imageURL varchar(255),description varchar(150));' -u root
+  - mysql -e 'create database nayar_test; create table nayar_test.POI (id varchar(255),footnote varchar(150),title varchar(150),lat decimal(13,10),lon decimal(13,10),imageURL varchar(255),description varchar(150),biwStyle enum("classic","collapsed"),alt int(10),doNotIndex tinyInt(1),showSmallBiw tinyInt(1),showBiwOnClick tinyInt(1),poiType enum("geo","vision"));' -u root
   - mysql -e 'use nayar_test; show tables; describe POI;'
-  - mysql -e 'use nayar_test; insert into `POI` (`id`,`footnote`,`title`,`lat`,`lon`,`imageURL`,`description`) values ("geo_test_1","test for nayar","nayar test",40.692842,-73.931183,"http://trstorey.sysreturn.net/lib/img/bioav.png","nayar testing")'
+  - mysql -e 'use nayar_test; insert into `POI` (`id`,`footnote`,`title`,`lat`,`lon`,`imageURL`,`description`,`poiType`) values ("geo_test_1","test for nayar","nayar test",40.692842,-73.931183,"http://trstorey.sysreturn.net/lib/img/bioav.png","nayar testing","geo")'
