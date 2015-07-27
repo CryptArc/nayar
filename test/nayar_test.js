@@ -2,7 +2,7 @@
 
 var nayar = require('../lib/nayar.js');
 var query = {};
-var expected = {};
+var expectedResponse = {};
 var defaultConfig = {
   host : 'localhost',
   user : 'root',
