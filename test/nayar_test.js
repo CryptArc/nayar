@@ -52,7 +52,7 @@ exports['config'] = {
     test.setConfig();
     test.deepEqual(nayar.getConfig(), defaultConfig, 'setting config with no args should set to default');
   }
-}
+};
 
 exports['getGeoPOIs'] = {
   setUp: function(done) {
