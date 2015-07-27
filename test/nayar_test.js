@@ -1,5 +1,4 @@
 'use strict';
-
 var nayar = require('../lib/nayar.js');
 var query = {};
 var expectedResponse = {};
@@ -49,8 +48,9 @@ exports['config'] = {
     nayar.setConfig(customConfig);
     test.deepEqual(nayar.getConfig(), customConfig, 'config should be customizable');
 
-    test.setConfig();
+    nayar.setConfig();
     test.deepEqual(nayar.getConfig(), defaultConfig, 'setting config with no args should set to default');
+    test.done();
   }
 };
 
