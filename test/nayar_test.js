@@ -99,7 +99,9 @@ exports['getGeoPOIs'] = {
     test.expect(1);
     // tests here
     nayar.setConfig(customConfig);
-    test.deepEqual(nayar.getGeoPOIs(query), expectedResponse, 'should get GeoPOIs from the mysql database and format according to response specification');
-    test.done();
+    nayar.getGeoPOIs(query, function(json){
+      test.deepEqual(json, expectedResponse, 'should get GeoPOIs from the mysql database and format according to response specification');
+      test.done();
+    });
   },
 };
