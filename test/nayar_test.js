@@ -82,14 +82,14 @@ exports['getGeoPOIs'] = {
           "footnote": "test for nayar" },
           "imageURL": "http:\/\/trstorey.sysreturn.net\/lib\/img\/bioav.png"
         }],
-        "layer": "nayartest",
+        "layer": "geotest",
         "errorString": "ok",
         "errorCode": 0
     };
     customConfig = {
       host : '127.0.0.1',
       user : 'root',
-      password : '',
+      password : 'Alt0264Uml4ut',
       port : 3306,
       database : 'nayar_test'
     };
@@ -99,7 +99,7 @@ exports['getGeoPOIs'] = {
     test.expect(1);
     // tests here
     nayar.setConfig(customConfig);
-    nayar.getGeoPOIs(query, function(json){
+    nayar.getPOIs(query, function(json){
       test.deepEqual(json, expectedResponse, 'should get GeoPOIs from the mysql database and format according to response specification');
       test.done();
     });
