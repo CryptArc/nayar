@@ -8,4 +8,5 @@ node_js:
 
 before_script:
   - npm install -g grunt-cli
-  - mysql -e 'create database nayar_test; use nayar_test; source db/db.sql'
+  - mysql -e 'create database nayar_test;' -u root
+  - mysql nayar_test < db/db.sql -u root

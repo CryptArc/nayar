@@ -89,7 +89,7 @@ exports['getGeoPOIs'] = {
     customConfig = {
       host : '127.0.0.1',
       user : 'root',
-      password : 'Alt0264Uml4ut',
+      password : '',
       port : 3306,
       database : 'nayar_test'
     };
