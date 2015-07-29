@@ -67,19 +67,19 @@ exports['getGeoPOIs'] = {
       lon : -73.931183,
       userId : "ed48067cda8e1b985dbb8ff3653a2da4fd490a37",
       radius : 250,
-      layerName : "nayartest",
+      layerName : "geotest",
       version : "6.0",
       action : "refresh",
       accuracy : 100
     };
     expectedResponse = {
       "hotspots": [{
-        "id": "geo_test_1",
+        "id": "geo_test",
         "anchor": { "geolocation": { "lat": 40.692842, "lon": -73.931183 } },
         "text": {
-          "title": "nayar test",
-          "description": "nayar testing",
-          "footnote": "test for nayar" },
+          "title": "nayartest",
+          "description": "testing nayar",
+          "footnote": "author: thomasrstorey" },
           "imageURL": "http:\/\/trstorey.sysreturn.net\/lib\/img\/bioav.png"
         }],
         "layer": "geotest",

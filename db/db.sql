@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `Animation` (
   `axis_x` decimal(10,2) DEFAULT NULL,
   `axis_y` decimal(10,2) DEFAULT NULL,
   `axis_z` decimal(10,2) DEFAULT NULL,
-  `poiID` int(11) DEFAULT NULL,
+  `poiID` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
@@ -192,8 +192,11 @@ CREATE TABLE IF NOT EXISTS `Anchor` (
 
 CREATE TABLE IF NOT EXISTS `Poi` (
   `id` varchar(255) NOT NULL,
+  `layerID` int(11) NOT NULL,
   `anchorID` int(11) NOT NULL,
   `objectID` int(11) DEFAULT NULL,
+  `transformID` int(11) DEFAULT NULL,
+  `animationID` int(11) DEFAULT NULL,
   `title` varchar(150) DEFAULT NULL,
   `description` varchar(150) DEFAULT NULL,
   `footnote` varchar(150) DEFAULT NULL,
@@ -205,9 +208,6 @@ CREATE TABLE IF NOT EXISTS `Poi` (
   `icon_type` int(11) DEFAULT NULL,
   `inFocus` tinyint(1) DEFAULT NULL,
   `poiType` enum("geo","vision") NOT NULL,
-  `transformID` int(11) DEFAULT NULL,
-  `layerID` int(11) NOT NULL,
-  `animationID` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `anchorID` (`anchorID`),
   KEY `objectID` (`objectID`),
@@ -224,10 +224,10 @@ CREATE TABLE IF NOT EXISTS `Poi` (
 --
 
 INSERT INTO `Animation` (`id`, `event`, `type`, `length`, `delay`, `interpolation`, `interpolationParam`, `persist`, `repeat`, `from`, `to`, `axis_x`, `axis_y`, `axis_z`, `poiID`) VALUES
-(1, 'onFocus', 'scale', 2000, 3000, 'bounce', '1.00', 0, 1, '0.20', '1.00', '1.00', '1.00', '1.00', 1),
-(2, 'onClick', 'rotate', 1000, 0, 'linear', NULL, 1, 1, '0.00', '360.00', '0.00', '0.00', '1.00', 1),
-(3, 'onClick', 'translate', 2000, 0, 'accelerateDecelerate', NULL, 1, 0, '0.00', '1.00', '-0.08', '0.08', '0.00', 1),
-(4, 'onCreate', 'translate', 3000, 0, 'linear', NULL, 0, 0, '1.00', '0.00', '-0.10', '0.00', '0.00', 1);
+(1, 'onFocus', 'scale', 2000, 3000, 'bounce', '1.00', 0, 1, '0.20', '1.00', '1.00', '1.00', '1.00', 'vision_test'),
+(2, 'onClick', 'rotate', 1000, 0, 'linear', NULL, 1, 1, '0.00', '360.00', '0.00', '0.00', '1.00', 'vision_test'),
+(3, 'onClick', 'translate', 2000, 0, 'accelerateDecelerate', NULL, 1, 0, '0.00', '1.00', '-0.08', '0.08', '0.00', 'vision_test'),
+(4, 'onCreate', 'translate', 3000, 0, 'linear', NULL, 0, 0, '1.00', '0.00', '-0.10', '0.00', '0.00', 'vision_test');
 
 INSERT INTO `Layer` (`layer`, `refreshInterval`, `fullRefresh`, `showMessage`, `id`, `poiType`) VALUES
 ('visiontest', 300, 1, NULL, 1, 'vision');
