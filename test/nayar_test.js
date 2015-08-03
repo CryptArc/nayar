@@ -4,6 +4,8 @@ var geo_query = {};
 var geo_response = {};
 var vision_query = {};
 var vision_response = {};
+var invalid_query = {};
+var invalid_response = {};
 var defaultConfig = {};
 var customConfig = {};
 /*
@@ -59,6 +61,25 @@ exports['config'] = {
 exports['getPOIs'] = {
   setUp: function(done) {
     // setup here
+    // invalid test parameters
+    invalid_query = {
+      lang : "en",
+      countryCode : "US",
+      lat : 40.692842,
+      lon : -73.931183,
+      userId : "ed48067cda8e1b985dbb8ff3653a2da4fd490a37",
+      radius : 250,
+      // no layerName parameter!
+      version : "6.0",
+      action : "refresh",
+      accuracy : 100
+    };
+    invalid_response = {
+      layer : "",
+      hotspots : [],
+      errorCode : 20,
+      errorString : "invalid request"
+    };
     // geo test parameters
     geo_query = {
       lang : "en",
@@ -96,6 +117,8 @@ exports['getPOIs'] = {
       layerName : "visiontest",
       version : "6.0",
       action : "refresh",
+      lat : 40.692842,
+      lon : -73.931183,
       accuracy : 100
     };
     vision_response = {
@@ -172,6 +195,14 @@ exports['getPOIs'] = {
       database : 'nayar_test'
     };
     done();
+  },
+  'invalid': function(test) {
+    test.expect(1);
+    nayar.setConfig(customConfig);
+    nayar.getPOIs(invalid_query, function(json){
+      test.deepEqual(json, invalid_response, 'should give a valid error JSON if GET query is invalid');
+      test.done();
+    });
   },
   'geo': function(test) {
     test.expect(1);
