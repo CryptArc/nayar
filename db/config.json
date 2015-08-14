@@ -1,0 +1,474 @@
+{
+    "mysql": {
+        "connection": {
+            "host": "localhost",
+            "user": "root",
+            "password": "",
+            "database": "nayar_test"
+        },
+        "tables": {
+            "Action": {
+                "name": "Action",
+                "columns": {
+                    "id": {
+                        "type": "int",
+                        "length": "11",
+                        "value": null,
+                        "options": "NOT NULL AUTO_INCREMENT PRIMARY KEY"
+                    },
+                    "poiID": {
+                        "type": "varchar",
+                        "length": "255",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "layerID": {
+                        "type": "int",
+                        "length": "11",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "uri": {
+                        "type": "varchar",
+                        "length": "255",
+                        "value": null,
+                        "options": "NOT NULL"
+                    },
+                    "label": {
+                        "type": "varchar",
+                        "length": "30",
+                        "value": null,
+                        "options": "NOT NULL"
+                    },
+                    "contentType": {
+                        "type": "varchar",
+                        "length": "255",
+                        "value": null,
+                        "options": "DEFAULT 'application/vnd.layar.internal'"
+                    },
+                    "method": {
+                        "type": "enum",
+                        "length": null,
+                        "value": "'GET','POST'",
+                        "options": "DEFAULT 'GET'"
+                    },
+                    "params": {
+                        "type": "varchar",
+                        "length": "255",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "activityType": {
+                        "type": "int",
+                        "length": "2",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "autoTriggerOnly": {
+                        "type": "tinyint",
+                        "length": "1",
+                        "value": null,
+                        "options": "DEFAULT '0'"
+                    },
+                    "showActivity": {
+                        "type": "tinyint",
+                        "length": "1",
+                        "value": null,
+                        "options": "DEFAULT '1'"
+                    },
+                    "activityMessage": {
+                        "type": "varchar",
+                        "length": "255",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "autoTrigger": {
+                        "type": "tinyint",
+                        "length": "1",
+                        "value": null,
+                        "options": "NOT NULL DEFAULT '0'"
+                    }
+                }
+            },
+            "Animation": {
+                "name": "Animation",
+                "columns": {
+                    "id": {
+                        "type": "int",
+                        "length": "11",
+                        "value": null,
+                        "options": "NOT NULL AUTO_INCREMENT PRIMARY KEY"
+                    },
+                    "event": {
+                        "type": "enum",
+                        "length": null,
+                        "value": "'onCreate','onUpdate','onFocus','onClick','onDelete'",
+                        "options": "NOT NULL"
+                    },
+                    "type": {
+                        "type": "enum",
+                        "length": null,
+                        "value": "'scale','translate','rotate'",
+                        "options": "NOT NULL"
+                    },
+                    "length": {
+                        "type": "int",
+                        "length": "11",
+                        "value": null,
+                        "options": "NOT NULL"
+                    },
+                    "delay": {
+                        "type": "int",
+                        "length": "11",
+                        "value": null,
+                        "options": "DEFAULT '0'"
+                    },
+                    "interpolation": {
+                        "type": "enum",
+                        "length": null,
+                        "value": "'linear','accelerateDecelerate','accelerate','decelerate','bounce','cycle','anticipateOvershoot','anticipate','overshoot'",
+                        "options": "DEFAULT 'linear'"
+                    },
+                    "interpolationParam": {
+                        "type": "decimal",
+                        "length": "10,2",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "persist": {
+                        "type": "tinyint",
+                        "length": "1",
+                        "value": null,
+                        "options": "DEFAULT '0'"
+                    },
+                    "repeat": {
+                        "type": "tinyint",
+                        "length": "1",
+                        "value": null,
+                        "options": "DEFAULT '0'"
+                    },
+                    "from": {
+                        "type": "decimal",
+                        "length": "10,2",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "to": {
+                        "type": "decimal",
+                        "length": "10,2",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "axis_x": {
+                        "type": "decimal",
+                        "length": "10,2",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "axis_y": {
+                        "type": "decimal",
+                        "length": "10,2",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "axis_z": {
+                        "type": "decimal",
+                        "length": "10,2",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "poiID": {
+                        "type": "varchar",
+                        "length": "255",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    }
+                }
+            },
+            "Layer": {
+                "name": "Layer",
+                "columns": {
+                    "layer": {
+                        "type": "varchar",
+                        "length": "255",
+                        "value": null,
+                        "options": "NOT NULL"
+                    },
+                    "refreshInterval": {
+                        "type": "int",
+                        "length": "10",
+                        "value": null,
+                        "options": "DEFAULT '300'"
+                    },
+                    "fullRefresh": {
+                        "type": "tinyint",
+                        "length": "1",
+                        "value": null,
+                        "options": "DEFAULT '1'"
+                    },
+                    "showMessage": {
+                        "type": "varchar",
+                        "length": "255",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "poiType": {
+                        "type": "enum",
+                        "length": null,
+                        "value": "'geo','vision'",
+                        "options": "NOT NULL"
+                    },
+                    "id": {
+                        "type": "int",
+                        "length": "11",
+                        "value": null,
+                        "options": "NOT NULL AUTO_INCREMENT PRIMARY KEY"
+                    }
+                }
+            },
+            "Object": {
+                "name": "Object",
+                "columns": {
+                    "id": {
+                        "type": "int",
+                        "length": "11",
+                        "value": null,
+                        "options": "NOT NULL AUTO_INCREMENT PRIMARY KEY"
+                    },
+                    "contentType": {
+                        "type": "varchar",
+                        "length": "255",
+                        "value": null,
+                        "options": "NOT NULL"
+                    },
+                    "url": {
+                        "type": "varchar",
+                        "length": "255",
+                        "value": null,
+                        "options": "NOT NULL"
+                    },
+                    "size": {
+                        "type": "float",
+                        "length": "15,5",
+                        "value": null,
+                        "options": "NOT NULL"
+                    },
+                    "previewImage": {
+                        "type": "varchar",
+                        "length": "255",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    }
+                }
+            },
+            "Transform": {
+                "name": "Transform",
+                "columns": {
+                    "id": {
+                        "type": "int",
+                        "length": "11",
+                        "value": null,
+                        "options": "NOT NULL AUTO_INCREMENT PRIMARY KEY"
+                    },
+                    "rel": {
+                        "type": "tinyint",
+                        "length": "1",
+                        "value": null,
+                        "options": "DEFAULT '0'"
+                    },
+                    "angle": {
+                        "type": "decimal",
+                        "length": "5,2",
+                        "value": null,
+                        "options": "DEFAULT '0.00'"
+                    },
+                    "rotate_x": {
+                        "type": "decimal",
+                        "length": "2,1",
+                        "value": null,
+                        "options": "DEFAULT '0.0'"
+                    },
+                    "rotate_y": {
+                        "type": "decimal",
+                        "length": "2,1",
+                        "value": null,
+                        "options": "DEFAULT '0.0'"
+                    },
+                    "rotate_z": {
+                        "type": "decimal",
+                        "length": "2,1",
+                        "value": null,
+                        "options": "DEFAULT '1.0'"
+                    },
+                    "translate_x": {
+                        "type": "decimal",
+                        "length": "5,1",
+                        "value": null,
+                        "options": "DEFAULT '0.0'"
+                    },
+                    "translate_y": {
+                        "type": "decimal",
+                        "length": "5,1",
+                        "value": null,
+                        "options": "DEFAULT '0.0'"
+                    },
+                    "translate_z": {
+                        "type": "decimal",
+                        "length": "5,1",
+                        "value": null,
+                        "options": "DEFAULT '0.0'"
+                    },
+                    "scale_x": {
+                        "type": "decimal",
+                        "length": "12,2",
+                        "value": null,
+                        "options": "DEFAULT '1.00'"
+                    },
+                    "scale_y": {
+                        "type": "decimal",
+                        "length": "12,2",
+                        "value": null,
+                        "options": "DEFAULT '1.00'"
+                    },
+                    "scale_z": {
+                        "type": "decimal",
+                        "length": "12,2",
+                        "value": null,
+                        "options": "DEFAULT '1.00'"
+                    },
+                    "scale": {
+                        "type": "decimal",
+                        "length": "12,2",
+                        "value": null,
+                        "options": "DEFAULT 1.00"
+                    }
+                }
+            },
+            "Poi": {
+                "name": "Poi",
+                "columns": {
+                    "id": {
+                        "type": "int",
+                        "length": "11",
+                        "value": null,
+                        "options": "NOT NULL AUTO_INCREMENT PRIMARY KEY"
+                    },
+                    "layerID": {
+                        "type": "int",
+                        "length": "11",
+                        "value": null,
+                        "options": "NOT NULL"
+                    },
+                    "objectID": {
+                        "type": "int",
+                        "length": "11",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "transformID": {
+                        "type": "int",
+                        "length": "11",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "title": {
+                        "type": "varchar",
+                        "length": "150",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "description": {
+                        "type": "varchar",
+                        "length": "150",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "footnote": {
+                        "type": "varchar",
+                        "length": "150",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "imageURL": {
+                        "type": "varchar",
+                        "length": "255",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "showSmallBiw": {
+                        "type": "tinyint",
+                        "length": "1",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "showBiwOnClick": {
+                        "type": "tinyint",
+                        "length": "1",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "biwStyle": {
+                        "type": "enum",
+                        "length": null,
+                        "value": "'classic','collapsed'",
+                        "options": "DEFAULT NULL"
+                    },
+                    "icon_url": {
+                        "type": "varchar",
+                        "length": "255",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "icon_type": {
+                        "type": "int",
+                        "length": "11",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "inFocus": {
+                        "type": "tinyint",
+                        "length": "1",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "poiType": {
+                        "type": "enum",
+                        "length": null,
+                        "value": "'geo','vision'",
+                        "options": "NOT NULL"
+                    },
+                    "referenceImage": {
+                        "type": "varchar",
+                        "length": "255",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "lat": {
+                        "type": "decimal",
+                        "length": "13,10",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "lon": {
+                        "type": "decimal",
+                        "length": "13,10",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "alt": {
+                        "type": "decimal",
+                        "length": "13,10",
+                        "value": null,
+                        "options": "DEFAULT NULL"
+                    },
+                    "geolocation": {
+                        "type": "enum",
+                        "length": null,
+                        "value": "'user'",
+                        "options": "DEFAULT NULL"
+                    }
+                }
+            }
+        }
+    }
+}
