@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!--
+  nayar/app/templates/index.handlebars
+  https://github.com/thomasrstorey/nayar
+
+  Copyright (c) 2015 thomasrstorey
+  Licensed under the MIT license.
+-->
+<html>
+  {{> head}}
+    <div class="row">
+      <h2>New {{table}}</h2>
+    {{#if layer}}
+    <form id="new" method="post" action="./">
+      <label>Layer Name</label>
+      <input type="text" name="layer" />
+      <label>Refresh Interval</label>
+      <input type="number" name="refreshInterval"/>
+      <label>Full Refresh</label>
+      <input type="checkbox" name="fullRefresh"/>
+      <label>Message</label>
+      <input type="text" name="showMessage"/>
+      <label>POI Type</label>
+      <select name="poiType">
+        <option value="geo">geo</option>
+        <option value="vision">vision</option>
+      </select>
+    </form>
+    {{/if}}
+    </div>
+    <div id="save-row" class="row">
+    <button class="button-primary" id="bottom-save" onclick="formSubmit('new');">
+          <i class="fa fa-floppy-o"></i> Save
+    </button>
+    </div>
+  {{> foot}}
+</html>

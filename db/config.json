@@ -7,6 +7,35 @@
             "database": "nayar_test"
         },
         "tables": {
+            "User": {
+              "name": "User",
+              "columns": {
+                "id": {
+                  "type": "int",
+                  "length": "11",
+                  "value": null,
+                  "options": "NOT NULL AUTO_INCREMENT PRIMARY KEY"
+                },
+                "username": {
+                  "type": "varchar",
+                  "length": "255",
+                  "value": null,
+                  "options": "NOT NULL"
+                },
+                "passhash": {
+                  "type": "varchar",
+                  "length": "255",
+                  "value": null,
+                  "options": "NOT NULL"
+                },
+                "salt": {
+                  "type": "varchar",
+                  "length": "255",
+                  "value": null,
+                  "options": "NOT NULL"
+                }
+              }
+            },
             "Action": {
                 "name": "Action",
                 "columns": {
@@ -192,7 +221,7 @@
                         "type": "varchar",
                         "length": "255",
                         "value": null,
-                        "options": "NOT NULL"
+                        "options": "NOT NULL UNIQUE"
                     },
                     "refreshInterval": {
                         "type": "int",

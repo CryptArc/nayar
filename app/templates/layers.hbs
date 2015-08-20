@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!--
+  nayar/app/templates/index.handlebars
+  https://github.com/thomasrstorey/nayar
+
+  Copyright (c) 2015 thomasrstorey
+  Licensed under the MIT license.
+-->
+<html>
+  {{> head}}
+    <div class="row">
+      <h2>Layers</h2>
+      <button id="top-add" class="button-primary" onclick="addNew({table:'layer'});">
+        <i class="fa fa-plus-square-o"></i> New Layer
+      </button>
+    {{#if layers}}
+    <table>
+      <tr id="header-row">
+        <th>ID</th><th>Name</th><th>Type</th><th>Delete</th>
+      </tr>
+    {{#each layers}}
+      <tr>
+        <td onclick="goTo({table:'layer', id:{{this.id}} });">{{this.id}}</td>
+        <td onclick="goTo({table:'layer', id:{{this.id}} });">{{this.layer}}</td>
+        <td onclick="goTo({table:'layer', id:{{this.id}} });">{{this.poiType}}</td>
+        <td><i class="fa fa-trash delete-row" onclick="deleteRow('layer',{{this.id}});"></i></td>
+      </tr>
+    {{/each}}
+    </table>
+    {{else}}
+    <h3>No layers yet. Click the Add New button below to add a new layer.</h3>
+    {{/if}}
+    <button id="bottom-add" class="button-primary" onclick="addNew({table:'layer'});">
+      <i class="fa fa-plus-square-o"></i> New Layer
+    </button>
+    </div>
+  {{> foot}}
+</html>

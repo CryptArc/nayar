@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!--
+  nayar/app/templates/index.handlebars
+  https://github.com/thomasrstorey/nayar
+
+  Copyright (c) 2015 thomasrstorey
+  Licensed under the MIT license.
+-->
+<html>
+  {{> head}}
+    <div class="row">
+    {{#if user}}
+    <p>Currently logged in as {{user.username}}</p>
+    {{else}}
+    {{#if message}}
+    <p>{{message}}</p>
+    {{/if}}
+    <form action="/login" method="post">
+      <div>
+          <label>Username:</label>
+          <input type="text" name="username"/>
+      </div>
+      <div>
+          <label>Password:</label>
+          <input type="password" name="password"/>
+      </div>
+      <div>
+         <label></label>
+          <input type="submit" value="Log In"/>
+      </div>
+    </form>
+    {{/if}}
+    </div>
+  {{> foot}}
+</html>

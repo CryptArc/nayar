@@ -152,7 +152,7 @@ exports['mysqlHandling'] = {
   init : function (test) {
     test.expect(7);
     mysqlhandler.init(function(err, results){
-      test.equal(results.length, 6, "init should create databases if they don't already exist");
+      test.equal(results.length, 7, "init should create databases if they don't already exist");
       results.forEach(function(result){
         test.equal(result.changedRows, 0, "init should create databases if they don't already exist");
       });

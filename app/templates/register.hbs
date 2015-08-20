@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--
+  nayar/app/templates/index.handlebars
+  https://github.com/thomasrstorey/nayar
+
+  Copyright (c) 2015 thomasrstorey
+  Licensed under the MIT license.
+-->
+<html>
+  {{> head}}
+    <div class="row">
+    {{#if locked}}
+    <p>An admin user has already been created for this nayar web server.
+    To make a new user, first delete the current admin from your database.
+    Then you will be able to create a new one on this page.</p>
+    {{else if user}}
+    <p>You are already logged in as {{user.username}}. Only one admin user is
+      allowed.</p>
+    {{else}}
+    {{#if message}}
+    <p>{{message}}</p>
+    {{/if}}
+    <form action="/register" method="post">
+      <div>
+          <label>Username:</label>
+          <input type="text" name="username"/>
+      </div>
+      <div>
+          <label>Password:</label>
+          <input type="password" name="password"/>
+      </div>
+      <div>
+          <label>Confirm Password:</label>
+          <input type="password" name="password-confirm"/>
+      </div>
+      <div>
+        <label></label>
+          <input type="submit" value="Register"/>
+      </div>
+    </form>
+    {{/if}}
+    </div>
+  {{> foot}}
+</html>

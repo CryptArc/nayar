@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<!--
+  nayar/app/templates/index.handlebars
+  https://github.com/thomasrstorey/nayar
+
+  Copyright (c) 2015 thomasrstorey
+  Licensed under the MIT license.
+-->
+<html>
+  {{> head}}
+    <div class="row">
+      <h2>Layer: {{layer.layer}}</h2>
+      <button id="top-save">
+            <i class="fa fa-floppy-o"></i> Save
+      </button>
+    <form method="post" action="./">
+      <label>ID</label>
+      <p>{{layer.id}}</p>
+      <label>Layer Name</label>
+      <input type="text" name="layer" value="{{layer.layer}}"/>
+      <label>Refresh Interval</label>
+      <input type="number" name="refreshInterval" value="{{layer.refreshInterval}}"/>
+      <label>Full Refresh</label>
+      <input type="checkbox" name="fullRefresh" checked="{{layer.fullRefresh}}"/>
+      <label>Message</label>
+      <input type="text" name="showMessage" value="{{layer.showMessage}}"/>
+      <label>POI Type</label>
+      <select name="poiType"/>
+        {{#if layer.poiType.geo}}
+        <option value="geo" selected>geo</option>
+        <option value="vision">vision</option>
+        {{else if layer.poiType.vision}}
+        <option value="geo">geo</option>
+        <option value="vision" selected>vision</option>
+        {{/if}}
+      </select>
+    </form>
+    <div class="row">
+    <h3>POIs</h3>
+    {{#if pois}}
+    <button id="top-add" class="button-primary">
+      <i class="fa fa-plus-square-o"></i> New POI
+    </button>
+    <table>
+      <tr id="header-row">
+        <th>ID</th>
+        {{#if pois.0.referenceImage}}
+        <th>Reference Image</th>
+        {{else}}
+        <th>Geolocation</th>
+        {{/if}}
+        <th>Object ID</th>
+        <th>Transform ID</th>
+        <th>Animations</th>
+        <th>Actions</th>
+        <th>Delete</th>
+      </tr>
+    {{#each pois}}
+      <tr onclick="goTo({table:'poi', id:{{this.id}} });">
+        <td>{{this.id}}</td>
+        {{#if this.referenceImage}}
+        <td>{{this.referenceImage}}</td>
+        {{else}}
+        <td>{{this.lat}}:{{this.lon}}</td>
+        {{/if}}
+        <td>{{this.objectID}}</td>
+        <td>{{this.transformID}}</td>
+        <td>{{this.animationNum}}</td>
+        <td>{{this.actionNum}}</td>
+        <td><i class="fa fa-trash"></i></td>
+      </tr>
+    {{/each}}
+    </table>
+    {{else}}
+    <p>No POIs yet. Click the 'New POI' button to add a new POI.</p>
+    {{/if}}
+    <button id="bottom-add" class="button-primary">
+      <i class="fa fa-plus-square-o"></i> New POI
+    </button>
+    </div>
+    <div id="save-row" class="row">
+    <button id="bottom-save">
+          <i class="fa fa-floppy-o"></i> Save
+    </button>
+    </div>
+    </div>
+  {{> foot}}
+</html>

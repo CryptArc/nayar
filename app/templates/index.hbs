@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<!--
+  nayar/app/templates/index.handlebars
+  https://github.com/thomasrstorey/nayar
+
+  Copyright (c) 2015 thomasrstorey
+  Licensed under the MIT license.
+-->
+<html>
+  {{> head}}
+    <div class="row">
+    {{#if user}}
+    <p>Welcome to the nayar dashboard, {{user.username}}. From here you can view, add,
+    edit, and delete Layar layers and their POIs and associated objects,
+    animations, actions, and transforms.</p>
+    <a href="/layers/">Layers</a>
+    {{else}}
+    <p>Welcome to the nayar dashboard. <a href="/login">Login</a> or
+      <a href="/register">register</a> a user to create and view layers.</p>
+    {{/if}}
+    </div>
+  {{> foot}}
+</html>
