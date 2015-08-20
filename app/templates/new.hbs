@@ -27,6 +27,93 @@
       </select>
     </form>
     {{/if}}
+
+    {{#if poi}}
+    <form id="new" method="post" action="./">
+
+      <label>Layer ID</label>
+      {{#if layerID}}
+      <input type="number" name="layerID" value="{{layerID}}"/>
+      {{else}}
+      <input type="number" name="layerID"/>
+      {{/if}}
+
+      <label>Object</label>
+      <button onclick="addForm('object')"><i class="fa fa-cube"></i> Add Object</button>
+      <div id="poi-object-form-container" class="optional-form-container">
+
+      </div>
+
+      <label>Transform</label>
+      <button onclick="addForm('transform')"><i class="fa fa-arrows"></i> Add Transform</button>
+      <div id="poi-transform-form-container" class="optional-form-container">
+
+      </div>
+
+      <label>Animations</label>
+      <button onclick="addForm('animation')"><i class="fa fa-play-circle-o"></i> Add Animation</button>
+      <div id="poi-transform-form-container" class="optional-form-container">
+
+      </div>
+
+      <label>Actions</label>
+      <button onclick="addForm('action')"><i class="fa fa-hand-pointer-o"></i> Add Action</button>
+      <div id="poi-transform-form-container" class="optional-form-container">
+
+      </div>
+
+      <label>POI Type</label>
+      <select name="poiType">
+        <option value="geo">geo</option>
+        <option value="vision">vision</option>
+      </select>
+
+      <div id="geo-poi-params-container">
+        <label>Geolocation</label>
+        <input type="number" name="lat"><input type="number" name="lon">
+
+        <label>Title</label>
+        <input type="text" name="title">
+
+        <label>Description</label>
+        <input type="text" name="description">
+
+        <label>Footnote</label>
+        <input type="text" name="footnote">
+
+        <label>Image URL</label>
+        <input type="url" name="imageURL">
+
+        <label>Show Small Brief Information Widget?</label>
+        <input type="checkbox" name="showSmallBiw" checked>
+
+        <label>Show Brief Information Widget on click?</label>
+        <input type="checkbox" name="showBiwOnClick" checked>
+
+        <label>Brief Information Widget Style</label>
+        <select name="biwStyle">
+          <option value="classic">classic</option>
+          <option value="collapsed">collapsed</option>
+        </select>
+
+        <label>Icon URL</label>
+        <input type="url" name="icon_url">
+
+        <label>Icon Type</label>
+        <input type="number" name="icon_type" value="0">
+
+        <label>In Focus</label>
+        <input type="checkbox" name="inFocus">
+      </div>
+
+      <div id="vision-poi-params-container">
+        <label>Reference Image</label>
+        <input type="text" name="referenceImage">
+      </div>
+
+    </form>
+    {{/if}}
+
     </div>
     <div id="save-row" class="row">
     <button class="button-primary" id="bottom-save" onclick="formSubmit('new');">

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<!--
+  nayar/app/templates/index.handlebars
+  https://github.com/thomasrstorey/nayar
+
+  Copyright (c) 2015 thomasrstorey
+  Licensed under the MIT license.
+-->
+<html>
+  {{> head}}
+    <div class="row">
+      <h2>Poi {{poi.id}}</h2>
+      <button id="top-save">
+            <i class="fa fa-floppy-o"></i> Save
+      </button>
+    <form method="post" action="./">
+      <label>ID</label>
+      <p>{{poi.id}}</p>
+      <label>Layer ID</label>
+      <p>{{poi.layerID}}</p>
+
+      <label>Object</label>
+      <button id="top-add" class="button-primary" onclick="addNew({table:'object', poiID:{{poi.id}} });">
+        <i class="fa fa-plus-square-o"></i> Add Object
+      </button>
+      {{#if object.id}}
+      <table>
+      <tr>
+        <th>ID</th>
+        <th>Content Type</th>
+        <th>URL</th>
+        <th>size</th>
+        <th>Preview Image</th>
+      </tr>
+      <tr>
+        <td>
+          {{object.id}}
+        </td>
+        <td>
+          {{object.contentType}}
+        </td>
+        <td>
+          {{object.url}}
+        </td>
+        <td>
+          {{object.size}}
+        </td>
+        <td>
+          {{object.previewImage}}
+        </td>
+      </tr>
+    </table>
+      {{else}}
+      <p>No object has been assigned to this POI.</p>
+      {{/if}}
+      <label>Transform</label>
+      <button id="top-add" class="button-primary" onclick="addNew({table:'transform', poiID:{{poi.id}} });">
+        <i class="fa fa-plus-square-o"></i> Add Transform
+      </button>
+      {{#if transform.id}}
+      <table>
+      <tr>
+        <th>ID</th>
+        <th>Relative</th>
+        <th>Angle</th>
+        <th>Rotation</th>
+        <th>Translation</th>
+        <th>Scale</th>
+      </tr>
+      <tr>
+        <td>
+          {{transform.id}}
+        </td>
+        <td>
+          {{transform.rel}}
+        </td>
+        <td>
+          {{transform.angle}}
+        </td>
+        <td>
+          ({{transform.rotate_x}}, {{transform.rotate_y}}, {{transform.rotate_z}})
+        </td>
+        <td>
+          ({{transform.translate_x}}, {{transform.translate_y}}, {{transform.translate_z}})
+        </td>
+        <td>
+          {{#if transform.scale}}
+          {{transform.scale}}
+          {{else}}
+          ({{transform.scale_x}}, {{transform.scale_y}}, {{transform.scale_z}})
+          {{/if}}
+        </td>
+      </tr>
+    </table>
+      {{else}}
+      <p>No transform has been assigned to this POI.</p>
+      {{/if}}
+      <label>Animations</label>
+      <button id="top-add" class="button-primary" onclick="addNew({table:'animation', poiID:{{poi.id}} });">
+        <i class="fa fa-plus-square-o"></i> Add Animation
+      </button>
+      {{#if animations}}
+      <table>
+      <tr>
+        <th>ID</th>
+        <th>Event</th>
+        <th>Type</th>
+        <th>Length (ms)</th>
+        <th>Delay (ms)</th>
+        <th>Interpolation</th>
+        <th>Persist</th>
+        <th>Repeat</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Axis</th>
+      </tr>
+      {{#each animations}}
+      <tr>
+        <td>{{this.id}}</td>
+        <td>{{this.event}}</td>
+        <td>{{this.type}}</td>
+        <td>{{this.length}}</td>
+        <td>{{this.delay}}</td>
+        <td>{{this.interpolation}}</td>
+        <td>{{this.persist}}</td>
+        <td>{{this.repeat}}</td>
+        <td>{{this.from}}</td>
+        <td>{{this.to}}</td>
+        <td>({{this.axis_x}}, {{this.axis_y}}, {{this.axis_z}})</td>
+      </tr>
+      {{/each}}
+    </table>
+      {{else}}
+      <p>No animations have been assigned to this POI.</p>
+      {{/if}}
+
+      <label>Actions</label>
+      <button id="top-add" class="button-primary" onclick="addNew({table:'action', poiID:{{poi.id}} });">
+        <i class="fa fa-plus-square-o"></i> Add Action
+      </button>
+      {{#if actions}}
+      <table>
+      <tr>
+        <th>ID</th>
+        <th>URI</th>
+        <th>Label</th>
+        <th>Content Type</th>
+        <th>Method</th>
+        <th>Parameters</th>
+        <th>Activity Type</th>
+      </tr>
+      {{#each actions}}
+      <tr>
+        <td>{{this.id}}</td>
+        <td>{{this.uri}}</td>
+        <td>{{this.label}}</td>
+        <td>{{this.contentType}}</td>
+        <td>{{this.method}}</td>
+        <td>{{this.params}}</td>
+        <td>{{this.activityType}}</td>
+      </tr>
+      {{/each}}
+    </table>
+      {{else}}
+      <p>No actions have been assigned to this POI.</p>
+      {{/if}}
+      <label>POI Type</label>
+      <select name="poiType"/>
+        {{#if poi.poiType.geo}}
+        <option value="geo" selected>geo</option>
+        <option value="vision">vision</option>
+        {{else if poi.poiType.vision}}
+        <option value="geo">geo</option>
+        <option value="vision" selected>vision</option>
+        {{/if}}
+      </select>
+      <div id="geo-poi-params-container">
+        <label>Geolocation</label>
+        <input type="number" name="lat" value="{{poi.lat}}"><input type="number" name="lon" value="{{poi.lon}}">
+
+        <label>Title</label>
+        <input type="text" name="title" value="{{poi.title}}">
+
+        <label>Description</label>
+        <input type="text" name="description" value="{{poi.description}}">
+
+        <label>Footnote</label>
+        <input type="text" name="footnote" value="{{poi.footnote}}">
+
+        <label>Image URL</label>
+        <input type="url" name="imageURL" value="{{poi.imageURL}}">
+
+        <label>Show Small Brief Information Widget?</label>
+        <input type="checkbox" name="showSmallBiw" {{#if poi.showSmallBiw}}checked{{/if}}>
+
+        <label>Show Brief Information Widget on click?</label>
+        <input type="checkbox" name="showBiwOnClick" {{#if poi.showBiwOnClick}}checked{{/if}}>
+
+        <label>Brief Information Widget Style</label>
+        <select name="biwStyle">
+          <option value="classic" {{#if poi.biwStyle.classic}}selected{{/if}}>classic</option>
+          <option value="collapsed" {{#if poi.biwStyle.collapsed}}selected{{/if}}>collapsed</option>
+        </select>
+
+        <label>Icon URL</label>
+        <input type="url" name="icon_url" value="{{poi.icon_url}}">
+
+        <label>Icon Type</label>
+        <input type="number" name="icon_type" value="{{poi.icon_type}}">
+
+        <label>In Focus</label>
+        <input type="checkbox" name="inFocus" {{#if poi.inFocus}}checked{{/if}}>
+      </div>
+
+      <div id="vision-poi-params-container">
+        <label>Reference Image</label>
+        <input type="text" name="referenceImage" value="{{poi.referenceImage}}">
+      </div>
+    </form>
+    <div id="save-row" class="row">
+    <button id="bottom-save">
+          <i class="fa fa-floppy-o"></i> Save
+    </button>
+    </div>
+    </div>
+  {{> foot}}
+</html>

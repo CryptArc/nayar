@@ -12,6 +12,7 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var flash = require('connect-flash');
 var app = express();
 
 app.use(cookieParser());
@@ -24,6 +25,7 @@ app.set('view engine', 'hbs');
 app.use(session({ secret: 'nayar is cool',
                   resave: false,
                   saveUninitialized: false }));
+app.use(flash());
 
 var port = process.env.PORT || 8188;
 require(path.join(__dirname, './routes.js'))(app);

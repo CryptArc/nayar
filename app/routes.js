@@ -17,7 +17,7 @@ module.exports = function(app){
   var jsf = require('jsonfile');
   var nayar = require('../lib/nayar.js');
 
-  var errortext = "<p>Sorry, the nayar dashboard encountered some sort of server error.</p>";
+  var errortext = "<p>Sorry, nayar dashboard encountered a server error.</p>";
   var config = jsf.readFileSync(path.join(__dirname, '../lib/config.json'));
 
   hbs.registerPartials(__dirname + '/templates/partials');
@@ -155,6 +155,57 @@ module.exports = function(app){
     });
   });
 
+  app.get('/poi/:id', function(req, res){
+    var query = { table:'Poi',
+                   action:'get',
+                   id: req.params.id };
+    nayar.do(query, function(err, poi){
+      poi = poi[0];
+      if(poi.poiType === 'geo'){
+        poi.poiType = {geo:true, vision:false};
+      } else {
+        poi.poiType = {geo:false, vision:true};
+      }
+      var objQuery = { table: 'Object',
+                       action: 'get',
+                       id: poi.objectID };
+      var transQuery = { table: 'Transform',
+                         action: 'get',
+                         id: poi.transformID };
+      var animQuery = { table: 'Animation',
+                        action: 'get',
+                        poiID: poi.id };
+      var actionQuery = { table: 'Action',
+                        action: 'get',
+                        poiID: poi.id };
+
+      nayar.do(animQuery, function(err, animations){
+        nayar.do(actionQuery, function(err, actions){
+          nayar.do(transQuery, function(err, transform){
+            transform = transform[0];
+            nayar.do(objQuery, function(err, object){
+              object = object[0];
+              var locals = { poi: poi,
+                             object: object,
+                             transform: transform,
+                             actions: actions,
+                             animations: animations };
+              res.render('poi.hbs',
+                          locals,
+                          function renderCallback(err, html){
+                            if(err){
+                              console.error(err);
+                              res.status(500).send(errortext);
+                            }
+                            res.send(html);
+              });
+            });
+          });
+        });
+      });
+    });
+  });
+
   app.get('/help', function(req, res){
 
   });
@@ -163,6 +214,11 @@ module.exports = function(app){
     var locals = {};
     locals[req.params.table] = true;
     locals.table = _.capitalize(req.params.table);
+    if(req.query.poiID){
+      locals.poiID = req.query.poiID;
+    }else if(req.query.layerID){
+      locals.layerID = req.query.layerID;
+    }
     res.render('new.hbs',
                 locals,
                 function renderCallback(err, html){
@@ -176,18 +232,135 @@ module.exports = function(app){
   });
 
   app.post('/new/:table', function(req, res){
+    if(req.params.table === 'poi'){
+      newPOI(req, res);
+    } else {
+      var query = { table: _.capitalize(req.params.table),
+                    action: 'set'};
+      query = _.assign(query, req.body);
+      nayar.do(query, function(err, results){
+        if(err){
+          console.error(err);
+          res.status(500).send(errortext);
+        } else {
+          res.redirect("/"+req.params.table+"/"+results.insertId);
+        }
+      });
+    }
+  });
+
+  function newPOI(req, res){
+    console.log("new poi");
+    var objq = extractOptionalForm('object', req.body);
+    if(objq){
+      objq.table = 'Object';
+      objq.action = 'set';
+    }
+
+    var trnq = extractOptionalForm('transform', req.body);
+    if(trnq) {
+      trnq.table = 'Transform';
+      trnq.action = 'set';
+    }
+
+    var actionsQs = extractOptionalForm('action', req.body);
+    var actqs = [];
+    _.each(actionsQs, function(value, key){
+      var index = parseInt(key.slice(-1), 10);
+      if(!this[index]){
+        this[index] = {table: 'Action', action: 'set'};
+      }
+      this[index][key.slice(-2)] = value;
+    }, actqs);
+
+    var animationsQs = extractOptionalForm('animation', req.body);
+    var aniqs = [];
+    _.each(animationsQs, function(value, key){
+      var index = parseInt(key.slice(-1), 10);
+      if(!this[index]){
+        this[index] = {table: 'Animation', action: 'set'};
+      }
+      this[index][key.slice(-2)] = value;
+    }, aniqs);
+
+    var objid = null,
+        trnid = null;
+    var count = 0;
+
     var query = { table: _.capitalize(req.params.table),
                   action: 'set'};
-    query = _.assign(query, req.body);
-    nayar.do(query, function(err, results){
-      if(err){
-        console.error(err);
-        res.status(500).send(errortext);
-      } else {
-        res.redirect("/"+req.params.table+"/"+results.insertId);
-      }
-    });
-  });
+    query = _.assign(query, _.omit(req.body, function(value, key){
+      return (_.startsWith(key, 'object_') || _.startsWith(key, 'transform_'))
+          || (_.startsWith(key, 'action_') || _.startsWith(key, 'animation_'));
+    }));
+    console.log("queries ready");
+    // first insert object and transform. Save insertIds from each insertion.
+    // then insert the poi, setting the object and transform ids appropriately.
+    // save the insertId from the poi as well.
+    // then insert the animations and actions, setting their poiIds appropriately.
+    if(objq){
+      nayar.do(objq, function(err, results){
+        objid = results.insertId;
+        count++;
+        if(count === 2){
+          insertPOI(query, insertArrays);
+        }
+      });
+    }
+    if(trnq){
+      nayar.do(trnq, function(err, results){
+        trnid = results.insertId;
+        count++;
+        if(count === 2){
+          insertPOI(query, insertArrays);
+        }
+      });
+    }
+
+    if(!objq && !trnq){
+      console.log("no obj no trn");
+      insertPOI(query, insertArrays);
+    }
+
+    function insertPOI(q, cb){
+      console.log("insert poi");
+      q.objectID = objid;
+      q.transformID = trnid;
+      nayar.do(q, function(err, results){
+        var poiID = results.insertId;
+        if(aniqs.length || actqs.length){
+          cb(poiID, function(){
+            res.redirect("/poi/"+poiID);
+          });
+        } else {
+          process.nextTick(function(){
+            console.log("redirect!");
+            res.redirect("/poi/"+poiID);
+          });
+        }
+      });
+    };
+
+    function insertArrays(poiID, cb){
+      console.log("insert arrays");
+      var total = aniqs.length + actqs.length;
+      var count = 0;
+      aniqs.forEach(function(q, i){
+        nayar.do(q, function(err, results){
+          if(++count === total){
+            return cb();
+          }
+        });
+      });
+      actqs.forEach(function(q, i){
+        nayar.do(q, function(err, results){
+          if(++count === total){
+            return cb();
+          }
+        });
+      });
+    };
+  };
 
   app.delete('/:table/:id', function(req, res){
     var query = { table: _.capitalize(req.params.table),
@@ -211,6 +384,20 @@ module.exports = function(app){
       res.send(html);
     });
   });
+
+  function extractOptionalForm(table, reqbody){
+    var identifier = table+'_';
+    var form = _.mapKeys( _.pick(reqbody, function(value, key){
+      return _.startsWith(key, identifier);
+    }), function(value, key){
+      return key.slice(table.length);
+    });
+    if(!form.length){
+      return null;
+    } else {
+      return form;
+    }
+  };
 
   function protect(req, res, next){
     if(!req.user){

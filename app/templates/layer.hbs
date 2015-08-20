@@ -38,7 +38,7 @@
     <div class="row">
     <h3>POIs</h3>
     {{#if pois}}
-    <button id="top-add" class="button-primary">
+    <button id="top-add" class="button-primary" onclick="addNew({table:'poi', layerID:{{layer.id}} });">
       <i class="fa fa-plus-square-o"></i> New POI
     </button>
     <table>
@@ -61,7 +61,7 @@
         {{#if this.referenceImage}}
         <td>{{this.referenceImage}}</td>
         {{else}}
-        <td>{{this.lat}}:{{this.lon}}</td>
+        <td>({{this.lat}} : {{this.lon}})</td>
         {{/if}}
         <td>{{this.objectID}}</td>
         <td>{{this.transformID}}</td>
@@ -74,7 +74,7 @@
     {{else}}
     <p>No POIs yet. Click the 'New POI' button to add a new POI.</p>
     {{/if}}
-    <button id="bottom-add" class="button-primary">
+    <button id="bottom-add" class="button-primary" onclick="addNew({table:'poi', layerID:{{layer.id}} });">
       <i class="fa fa-plus-square-o"></i> New POI
     </button>
     </div>

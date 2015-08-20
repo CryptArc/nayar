@@ -34,3 +34,7 @@ function deleteRow(table, id){
     document.location.reload();
   });
 };
+
+function addForm(table){
+  console.log(table);
+}
