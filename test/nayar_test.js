@@ -150,7 +150,7 @@ exports['mysqlFormatting'] = {
 
 exports['mysqlHandling'] = {
   init : function (test) {
-    test.expect(7);
+    test.expect(8);
     mysqlhandler.init(function(err, results){
       test.equal(results.length, 7, "init should create databases if they don't already exist");
       results.forEach(function(result){
@@ -268,7 +268,7 @@ exports['nayar'] = {
     test.expect(2);
     var laysetreq = {table: "Layer",
                   action: "set",
-                  layer: "testlayer",
+                  layer: "testlayer1",
                   poiType: "vision"};
     var laygetreq = {table: "Layer",
                   action: "get",
@@ -277,7 +277,7 @@ exports['nayar'] = {
       laygetreq.id = result.insertId;
       test.equal(result.affectedRows, 1, "'do' should be able to insert");
       nayar.do(laygetreq, function(err, data){
-        test.equal(data[0].layer, "testlayer", "'do' should be able to get inserted data");
+        test.equal(data[0].layer, "testlayer1", "'do' should be able to get inserted data");
         test.done();
       });
     });
@@ -286,7 +286,7 @@ exports['nayar'] = {
     test.expect(5);
     var laysetreq = {table: "Layer",
                   action: "set",
-                  layer: "testlayer",
+                  layer: "testlayer2",
                   poiType: "vision"};
     var poireq = {table: "Poi",
                   action: "set",
@@ -330,7 +330,7 @@ exports['nayar'] = {
     test.expect(2);
     var laysetreq = {table: "Layer",
                   action: "set",
-                  layer: "testlayer",
+                  layer: "testlayer3",
                   poiType: "vision"};
     nayar.do(laysetreq, function(err, result){
       test.equal(result.affectedRows, 1, "'do' should be able to insert data");
