@@ -39,26 +39,27 @@
       {{/if}}
 
       <label>Object</label>
-      <button onclick="addForm('object')"><i class="fa fa-cube"></i> Add Object</button>
+      <button form="poi-object-form" table="object" class="form-toggle"><i class="fa fa-cube"></i> Add Object</button>
       <div id="poi-object-form-container" class="optional-form-container">
 
       </div>
 
       <label>Transform</label>
-      <button onclick="addForm('transform')"><i class="fa fa-arrows"></i> Add Transform</button>
+      <button form="poi-transform-form" table="transform" class="form-toggle"><i class="fa fa-arrows"></i> Add Transform</button>
       <div id="poi-transform-form-container" class="optional-form-container">
+
 
       </div>
 
       <label>Animations</label>
-      <button onclick="addForm('animation')"><i class="fa fa-play-circle-o"></i> Add Animation</button>
-      <div id="poi-transform-form-container" class="optional-form-container">
+      <button form="poi-animation-form" table="animation" class="form-toggle"><i class="fa fa-play-circle-o"></i> Add Animation</button>
+      <div id="poi-animation-form-container" class="optional-form-container">
 
       </div>
 
       <label>Actions</label>
-      <button onclick="addForm('action')"><i class="fa fa-hand-pointer-o"></i> Add Action</button>
-      <div id="poi-transform-form-container" class="optional-form-container">
+      <button form="poi-action-form" table="action" class="form-toggle"><i class="fa fa-hand-pointer-o"></i> Add Action</button>
+      <div id="poi-action-form-container" class="optional-form-container">
 
       </div>
 
@@ -116,7 +117,7 @@
 
     </div>
     <div id="save-row" class="row">
-    <button class="button-primary" id="bottom-save" onclick="formSubmit('new');">
+    <button class="button-primary save-new" id="bottom-save">
           <i class="fa fa-floppy-o"></i> Save
     </button>
     </div>

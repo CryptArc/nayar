@@ -38,7 +38,7 @@
     <div class="row">
     <h3>POIs</h3>
     {{#if pois}}
-    <button id="top-add" class="button-primary" onclick="addNew({table:'poi', layerID:{{layer.id}} });">
+    <button class="button-primary top-add add" add="poi" layer-id="{{layer.id}}">
       <i class="fa fa-plus-square-o"></i> New POI
     </button>
     <table>
@@ -56,25 +56,25 @@
         <th>Delete</th>
       </tr>
     {{#each pois}}
-      <tr onclick="goTo({table:'poi', id:{{this.id}} });">
-        <td>{{this.id}}</td>
+      <tr>
+        <td class="data-link" table="poi" data-id="{{this.id}}">{{this.id}}</td>
         {{#if this.referenceImage}}
-        <td>{{this.referenceImage}}</td>
+        <td class="data-link" table="poi" data-id="{{this.id}}">{{this.referenceImage}}</td>
         {{else}}
-        <td>({{this.lat}} : {{this.lon}})</td>
+        <td class="data-link" table="poi" data-id="{{this.id}}">({{this.lat}} : {{this.lon}})</td>
         {{/if}}
-        <td>{{this.objectID}}</td>
-        <td>{{this.transformID}}</td>
-        <td>{{this.animationNum}}</td>
-        <td>{{this.actionNum}}</td>
-        <td><i class="fa fa-trash"></i></td>
+        <td class="data-link" table="poi" data-id="{{this.id}}">{{this.objectID}}</td>
+        <td class="data-link" table="poi" data-id="{{this.id}}">{{this.transformID}}</td>
+        <td class="data-link" table="poi" data-id="{{this.id}}">{{this.animationNum}}</td>
+        <td class="data-link" table="poi" data-id="{{this.id}}">{{this.actionNum}}</td>
+        <td><i class="fa fa-trash delete-row" table="poi" data-id="{{this.id}}"></i></td>
       </tr>
     {{/each}}
     </table>
     {{else}}
     <p>No POIs yet. Click the 'New POI' button to add a new POI.</p>
     {{/if}}
-    <button id="bottom-add" class="button-primary" onclick="addNew({table:'poi', layerID:{{layer.id}} });">
+    <button class="button-primary bottom-add add" add="poi" layer-id="{{layer.id}}" >
       <i class="fa fa-plus-square-o"></i> New POI
     </button>
     </div>

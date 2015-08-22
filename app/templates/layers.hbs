@@ -20,10 +20,10 @@
       </tr>
     {{#each layers}}
       <tr>
-        <td onclick="goTo({table:'layer', id:{{this.id}} });">{{this.id}}</td>
-        <td onclick="goTo({table:'layer', id:{{this.id}} });">{{this.layer}}</td>
-        <td onclick="goTo({table:'layer', id:{{this.id}} });">{{this.poiType}}</td>
-        <td><i class="fa fa-trash delete-row" onclick="deleteRow('layer',{{this.id}});"></i></td>
+        <td class="data-link" table="layer" data-id="{{this.id}}">{{this.id}}</td>
+        <td class="data-link" table="layer" data-id="{{this.id}}">{{this.layer}}</td>
+        <td class="data-link" table="layer" data-id="{{this.id}}">{{this.poiType}}</td>
+        <td ><i class="fa fa-trash delete-row" table="layer" data-id="{{this.id}}"></i></td>
       </tr>
     {{/each}}
     </table>

@@ -20,7 +20,7 @@
       <p>{{poi.layerID}}</p>
 
       <label>Object</label>
-      <button id="top-add" class="button-primary" onclick="addNew({table:'object', poiID:{{poi.id}} });">
+      <button add="object" poi-id="{{poi.id}}" class="button-primary top-add add">
         <i class="fa fa-plus-square-o"></i> Add Object
       </button>
       {{#if object.id}}
@@ -54,7 +54,7 @@
       <p>No object has been assigned to this POI.</p>
       {{/if}}
       <label>Transform</label>
-      <button id="top-add" class="button-primary" onclick="addNew({table:'transform', poiID:{{poi.id}} });">
+      <button add="transform" poi-id="{{poi.id}}" class="button-primary top-add add">
         <i class="fa fa-plus-square-o"></i> Add Transform
       </button>
       {{#if transform.id}}
@@ -96,7 +96,7 @@
       <p>No transform has been assigned to this POI.</p>
       {{/if}}
       <label>Animations</label>
-      <button id="top-add" class="button-primary" onclick="addNew({table:'animation', poiID:{{poi.id}} });">
+      <button add="animation" poi-id="{{poi.id}}" class="button-primary top-add add">
         <i class="fa fa-plus-square-o"></i> Add Animation
       </button>
       {{#if animations}}
@@ -135,7 +135,7 @@
       {{/if}}
 
       <label>Actions</label>
-      <button id="top-add" class="button-primary" onclick="addNew({table:'action', poiID:{{poi.id}} });">
+      <button add="action" poi-id="{{poi.id}}" class="button-primary top-add add">
         <i class="fa fa-plus-square-o"></i> Add Action
       </button>
       {{#if actions}}
