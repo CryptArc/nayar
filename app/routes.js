@@ -56,7 +56,7 @@ module.exports = function(app){
     nayar.getResponse(req.query, function ( err, response ) {
       if(err){
         console.error(err);
-        res.send(err.message);
+        res.status(500).send(err);
       } else {
         res.json(response);
       }
