@@ -50,9 +50,18 @@ module.exports = function(app){
     return new hbs.SafeString(markup+"</p>");
   });
 
-  // API Endpoints
+  // API Endpoint
 
-
+  app.get('/getpois', function ( req, res ) {
+    nayar.getResponse(req.query, function ( err, response ) {
+      if(err){
+        console.error(err);
+        res.send(err.message);
+      } else {
+        res.json(response);
+      }
+    });
+  });
 
   // Dashboard Routing
 
