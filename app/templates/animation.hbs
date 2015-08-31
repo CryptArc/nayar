@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!--
+  nayar/app/templates/index.handlebars
+  https://github.com/thomasrstorey/nayar
+
+  Copyright (c) 2015 thomasrstorey
+  Licensed under the MIT license.
+-->
+<html>
+  {{> head}}
+    <div class="row">
+      <h2>Animation: {{id}}</h2>
+      {{#breadcrumbs breadcrumbs 'animation'}}{{/breadcrumbs}}
+      {{#if saved}}
+      <p class="message">Animation successfully saved.</p>
+      {{/if}}
+      <button id="top-save" class="save-button">
+            <i class="fa fa-floppy-o"></i> Save
+      </button>
+    <form id='update' method="post" action="/animation/{{id}}">
+      <label>Event</label>
+      <select name='event'>
+      <option value='onCreate' {{#selected event 'onCreate'}}{{/selected}}>onCreate</option>
+      <option value='onUpdate' {{#selected event 'onUpdate'}}{{/selected}}>onUpdate</option>
+      <option value='onFocus' {{#selected event 'onFocus'}}{{/selected}}>onFocus</option>
+      <option value='onClick' {{#selected event 'onClick'}}{{/selected}}>onClick</option>
+      <option value='onDelete' {{#selected event 'onDelete'}}{{/selected}}>onDelete</option>
+    </select>
+      <label>Type</label>
+      <select name='type'>
+      <option value='translate' {{#selected type 'translate'}}{{/selected}}>translate</option>
+      <option value='rotate' {{#selected type 'rotate'}}{{/selected}}>rotate</option>
+      <option value='scale' {{#selected type 'scale'}}{{/selected}}>scale</option>
+    </select>
+      <label>Length</label>
+      <input type='number' name='length' value="{{length}}"/>
+      <label>Delay</label>
+      <input type='number' name='delay' value="{{delay}}"/>
+      <label>Interpolation</label>
+      <select name='interpolation'>
+      <option value='linear' {{#selected interpolation 'linear'}}{{/selected}}>linear</option>
+      <option value='accelerateDecelerate' {{#selected interpolation 'accelerateDecelerate'}}{{/selected}}>accelerateDecelerate</option>
+      <option value='accelerate' {{#selected interpolation 'accelerate'}}{{/selected}}>accelerate</option>
+      <option value='decelerate' {{#selected interpolation 'decelerate'}}{{/selected}}>decelerate</option>
+      <option value='bounce' {{#selected interpolation 'bounce'}}{{/selected}}>bounce</option>
+      <option value='cycle' {{#selected interpolation 'cycle'}}{{/selected}}>cycle</option>
+      <option value='anticipateOvershoot' {{#selected interpolation 'anticipateOvershoot'}}{{/selected}}>anticipateOvershoot</option>
+      <option value='anticipate' {{#selected interpolation 'anticipate'}}{{/selected}}>anticipate</option>
+      <option value='overshoot' {{#selected interpolation 'overshoot'}}{{/selected}}>overshoot</option>
+    </select>
+      <label>Interpolation Param</label>
+      <input name='interpolationParam' type='number' value="{{interpolationParam}}"/>
+      <label>Persist</label>
+      <input name='persist' type='checkbox' {{#if persist}}checked{{/if}}/>
+      <label>Repeat</label>
+      <input name='repeat' type='checkbox' {{#if repeat}}checked{{/if}}/>
+      <label>From</label>
+      <input name='from' type='number' value="{{from}}"/>
+      <label>To</label>
+      <input name='to' type='number' value="{{to}}"/>
+      <label>Axis</label>
+      <input name='axis_x' type='number' placeholder='x' value="{{axis_x}}"/>
+      <input name='axis_y' type='number' placeholder='y' value="{{axis_y}}"/>
+      <input name='axis_z' type='number' placeholder='z' value="{{axis_z}}"/>
+    </form>
+    <div id="save-row" class="row">
+    <button id="bottom-save" class="save-button">
+          <i class="fa fa-floppy-o"></i> Save
+    </button>
+    </div>
+    </div>
+  {{> foot}}
+</html>

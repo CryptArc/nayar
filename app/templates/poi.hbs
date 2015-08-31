@@ -9,18 +9,22 @@
 <html>
   {{> head}}
     <div class="row">
-      <h2>Poi {{poi.id}}</h2>
-      <button id="top-save">
+      <h2>POI {{poi.id}}</h2>
+      {{#breadcrumbs breadcrumbs 'poi'}}{{/breadcrumbs}}
+      {{#if saved}}
+      <p class="message">POI successfully saved.</p>
+      {{/if}}
+      <button id="top-save" class="save-button">
             <i class="fa fa-floppy-o"></i> Save
       </button>
-    <form method="post" action="./">
+    <form id='update' method="post" action="/poi/{{poi.id}}">
       <label>ID</label>
       <p>{{poi.id}}</p>
       <label>Layer ID</label>
       <p>{{poi.layerID}}</p>
 
       <label>Object</label>
-      <button add="object" poi-id="{{poi.id}}" class="button-primary top-add add">
+      <button {{#if object.id}}disabled{{/if}} add="object" poi-id="{{poi.id}}" class="button-primary top-add add">
         <i class="fa fa-plus-square-o"></i> Add Object
       </button>
       {{#if object.id}}
@@ -31,22 +35,26 @@
         <th>URL</th>
         <th>size</th>
         <th>Preview Image</th>
+        <th>Delete</th>
       </tr>
       <tr>
-        <td>
+        <td class="data-link" table="object" data-id="{{object.id}}">
           {{object.id}}
         </td>
-        <td>
+        <td class="data-link" table="object" data-id="{{object.id}}">
           {{object.contentType}}
         </td>
-        <td>
+        <td class="data-link" table="object" data-id="{{object.id}}">
           {{object.url}}
         </td>
-        <td>
+        <td class="data-link" table="object" data-id="{{object.id}}">
           {{object.size}}
         </td>
-        <td>
+        <td class="data-link" table="object" data-id="{{object.id}}">
           {{object.previewImage}}
+        </td>
+        <td>
+          <i class="fa fa-trash delete-row" table="object" data-id="{{object.id}}"></i>
         </td>
       </tr>
     </table>
@@ -54,7 +62,7 @@
       <p>No object has been assigned to this POI.</p>
       {{/if}}
       <label>Transform</label>
-      <button add="transform" poi-id="{{poi.id}}" class="button-primary top-add add">
+      <button add="transform" {{#if transform.id}}disabled{{/if}} poi-id="{{poi.id}}" class="button-primary top-add add">
         <i class="fa fa-plus-square-o"></i> Add Transform
       </button>
       {{#if transform.id}}
@@ -66,29 +74,33 @@
         <th>Rotation</th>
         <th>Translation</th>
         <th>Scale</th>
+        <th>Delete</th>
       </tr>
       <tr>
-        <td>
+        <td class="data-link" table="transform" data-id="{{transform.id}}">
           {{transform.id}}
         </td>
-        <td>
+        <td class="data-link" table="transform" data-id="{{transform.id}}">
           {{transform.rel}}
         </td>
-        <td>
+        <td class="data-link" table="transform" data-id="{{transform.id}}">
           {{transform.angle}}
         </td>
-        <td>
+        <td class="data-link" table="transform" data-id="{{transform.id}}">
           ({{transform.rotate_x}}, {{transform.rotate_y}}, {{transform.rotate_z}})
         </td>
-        <td>
+        <td class="data-link" table="transform" data-id="{{transform.id}}">
           ({{transform.translate_x}}, {{transform.translate_y}}, {{transform.translate_z}})
         </td>
-        <td>
+        <td class="data-link" table="transform" data-id="{{transform.id}}">
           {{#if transform.scale}}
           {{transform.scale}}
           {{else}}
           ({{transform.scale_x}}, {{transform.scale_y}}, {{transform.scale_z}})
           {{/if}}
+        </td>
+        <td>
+          <i class="fa fa-trash delete-row" table="transform" data-id="{{transform.id}}"></i>
         </td>
       </tr>
     </table>
@@ -113,20 +125,46 @@
         <th>From</th>
         <th>To</th>
         <th>Axis</th>
+        <th>Delete</th>
       </tr>
       {{#each animations}}
       <tr>
-        <td>{{this.id}}</td>
-        <td>{{this.event}}</td>
-        <td>{{this.type}}</td>
-        <td>{{this.length}}</td>
-        <td>{{this.delay}}</td>
-        <td>{{this.interpolation}}</td>
-        <td>{{this.persist}}</td>
-        <td>{{this.repeat}}</td>
-        <td>{{this.from}}</td>
-        <td>{{this.to}}</td>
-        <td>({{this.axis_x}}, {{this.axis_y}}, {{this.axis_z}})</td>
+        <td class="data-link" table="animation" data-id="{{this.id}}">
+          {{this.id}}
+        </td>
+        <td class="data-link" table="animation" data-id="{{this.id}}">
+          {{this.event}}
+        </td>
+        <td class="data-link" table="animation" data-id="{{this.id}}">
+          {{this.type}}
+        </td>
+        <td class="data-link" table="animation" data-id="{{this.id}}">
+          {{this.length}}
+        </td>
+        <td class="data-link" table="animation" data-id="{{this.id}}">
+          {{this.delay}}
+        </td>
+        <td class="data-link" table="animation" data-id="{{this.id}}">
+          {{this.interpolation}}
+        </td>
+        <td class="data-link" table="animation" data-id="{{this.id}}">
+          {{this.persist}}
+        </td>
+        <td class="data-link" table="animation" data-id="{{this.id}}">
+          {{this.repeat}}
+        </td>
+        <td class="data-link" table="animation" data-id="{{this.id}}">
+          {{this.from}}
+        </td>
+        <td class="data-link" table="animation" data-id="{{this.id}}">
+          {{this.to}}
+        </td>
+        <td class="data-link" table="animation" data-id="{{this.id}}">
+          ({{this.axis_x}}, {{this.axis_y}}, {{this.axis_z}})
+        </td>
+        <td>
+          <i class="fa fa-trash delete-row" table="animation" data-id="{{this.id}}"></i>
+        </td>
       </tr>
       {{/each}}
     </table>
@@ -148,16 +186,34 @@
         <th>Method</th>
         <th>Parameters</th>
         <th>Activity Type</th>
+        <th>Delete</th>
       </tr>
       {{#each actions}}
       <tr>
-        <td>{{this.id}}</td>
-        <td>{{this.uri}}</td>
-        <td>{{this.label}}</td>
-        <td>{{this.contentType}}</td>
-        <td>{{this.method}}</td>
-        <td>{{this.params}}</td>
-        <td>{{this.activityType}}</td>
+        <td class="data-link" table="action" data-id="{{this.id}}">
+          {{this.id}}
+        </td>
+        <td class="data-link" table="action" data-id="{{this.id}}">
+          {{this.uri}}
+        </td>
+        <td class="data-link" table="action" data-id="{{this.id}}">
+          {{this.label}}
+        </td>
+        <td class="data-link" table="action" data-id="{{this.id}}">
+          {{this.contentType}}
+        </td>
+        <td class="data-link" table="action" data-id="{{this.id}}">
+          {{this.method}}
+        </td>
+        <td class="data-link" table="action" data-id="{{this.id}}">
+          {{this.params}}
+        </td>
+        <td class="data-link" table="action" data-id="{{this.id}}">
+          {{this.activityType}}
+        </td>
+        <td>
+          <i class="fa fa-trash delete-row" table="action" data-id="{{this.id}}"></i>
+        </td>
       </tr>
       {{/each}}
     </table>
@@ -165,7 +221,7 @@
       <p>No actions have been assigned to this POI.</p>
       {{/if}}
       <label>POI Type</label>
-      <select name="poiType"/>
+      <select id="select-poitype" name="poiType"/>
         {{#if poi.poiType.geo}}
         <option value="geo" selected>geo</option>
         <option value="vision">vision</option>
@@ -218,7 +274,7 @@
       </div>
     </form>
     <div id="save-row" class="row">
-    <button id="bottom-save">
+    <button id="bottom-save" class="save-button">
           <i class="fa fa-floppy-o"></i> Save
     </button>
     </div>

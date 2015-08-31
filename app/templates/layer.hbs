@@ -10,10 +10,14 @@
   {{> head}}
     <div class="row">
       <h2>Layer: {{layer.layer}}</h2>
-      <button id="top-save">
+      {{#breadcrumbs breadcrumbs 'layer'}}{{/breadcrumbs}}
+      {{#if saved}}
+      <p class="message">Layer successfully saved.</p>
+      {{/if}}
+      <button id="top-save" class="save-button">
             <i class="fa fa-floppy-o"></i> Save
       </button>
-    <form method="post" action="./">
+    <form id='update' method="post" action="/layer/{{layer.id}}">
       <label>ID</label>
       <p>{{layer.id}}</p>
       <label>Layer Name</label>
@@ -21,7 +25,7 @@
       <label>Refresh Interval</label>
       <input type="number" name="refreshInterval" value="{{layer.refreshInterval}}"/>
       <label>Full Refresh</label>
-      <input type="checkbox" name="fullRefresh" checked="{{layer.fullRefresh}}"/>
+      <input type="checkbox" name="fullRefresh" {{#if layer.fullRefresh}}checked{{/if}}/>
       <label>Message</label>
       <input type="text" name="showMessage" value="{{layer.showMessage}}"/>
       <label>POI Type</label>
@@ -79,7 +83,7 @@
     </button>
     </div>
     <div id="save-row" class="row">
-    <button id="bottom-save">
+    <button id="bottom-save" class='save-button'>
           <i class="fa fa-floppy-o"></i> Save
     </button>
     </div>

@@ -17,7 +17,7 @@
       <label>Refresh Interval</label>
       <input type="number" name="refreshInterval"/>
       <label>Full Refresh</label>
-      <input type="checkbox" name="fullRefresh"/>
+      <input type="checkbox" name="fullRefresh" value="1"/>
       <label>Message</label>
       <input type="text" name="showMessage"/>
       <label>POI Type</label>
@@ -25,6 +25,120 @@
         <option value="geo">geo</option>
         <option value="vision">vision</option>
       </select>
+    </form>
+    {{/if}}
+
+    {{#if object}}
+    <form id="new" method="post" action="./">
+      <label>Content Type</label>
+      <input type='text' name='contentType'/>
+      <label>URL</label>
+      <input type='url' name='url'/>
+      <label>Size</label>
+      <input type='number' name='size'/>
+      <label>Preview Image</label>
+      <input type='text' name='previewImage'/>
+    </form>
+    {{/if}}
+
+    {{#if transform}}
+    <form id="new" method="post" action="./">
+      <label>Relative?</label>
+      <input type='checkbox' name='rel' value="1"/>
+      <label>Angle</label>
+      <input type='number' name='angle'/>
+      <label>Rotation</label>
+      <input type='number' name='rotate_x' placeholder='x'/>
+      <input type='number' name='rotate_y' placeholder='y'/>
+      <input type='number' name='rotate_z' placeholder='z'/>
+      <label>Translation</label>
+      <input type='number' name='translate_x' placeholder='x'/>
+      <input type='number' name='translate_y' placeholder='y'/>
+      <input type='number' name='translate_z' placeholder='z'/>
+      <label>Scale</label>
+      <input type='number' name='scale_x' placeholder='x'/>
+      <input type='number' name='scale_y' placeholder='y'/>
+      <input type='number' name='scale_z' placeholder='z'/>
+      <input type='number' name='scale' placeholder='uniform'/>
+    </form>
+    {{/if}}
+
+    {{#if animation}}
+    <form id="new" method="post" action="./">
+      <label>Event</label>
+      <select name='event'>
+      <option value='onCreate'>onCreate</option>
+      <option value='onUpdate'>onUpdate</option>
+      <option value='onFocus'>onFocus</option>
+      <option value='onClick'>onClick</option>
+      <option value='onDelete'>onDelete</option>
+    </select>
+      <label>Type</label>
+      <select name='type'>
+      <option value='translate'>translate</option>
+      <option value='rotate'>rotate</option>
+      <option value='scale'>scale</option>
+    </select>
+      <label>Length</label>
+      <input type='number' name='length'/>
+      <label>Delay</label>
+      <input type='number' name='delay'/>
+      <label>Interpolation</label>
+      <select name='interpolation'>
+      <option value='linear'>linear</option>
+      <option value='accelerateDecelerate'>accelerateDecelerate</option>
+      <option value='accelerate'>accelerate</option>
+      <option value='decelerate'>decelerate</option>
+      <option value='bounce'>bounce</option>
+      <option value='cycle'>cycle</option>
+      <option value='anticipateOvershoot'>anticipateOvershoot</option>
+      <option value='anticipate'>anticipate</option>
+      <option value='overshoot'>overshoot</option>
+    </select>
+      <label>Interpolation Param</label>
+      <input name='interpolationParam' type='number'/>
+      <label>Persist</label>
+      <input name='persist' type='checkbox' value="1"/>
+      <label>Repeat</label>
+      <input name='repeat' type='checkbox' value="1"/>
+      <label>From</label>
+      <input name='from' type='number'/>
+      <label>To</label>
+      <input name='to' type='number'/>
+      <label>Axis</label>
+      <input name='axis_x' type='number' placeholder='x'/>
+      <input name='axis_y' type='number' placeholder='y'/>
+      <input name='axis_z' type='number' placeholder='z'/>
+      <input type='hidden' name='poiID' value='{{poiID}}'/>
+    </form>
+    {{/if}}
+
+    {{#if action}}
+    <form id="new" method="post" action="./">
+      <label>URI</label>
+      <input name='uri' type='text'/>
+      <label>Label</label>
+      <input name='label' type='text'/>
+      <label>Content Type</label>
+      <input name='contentType' type='text'/>
+      <label>Method</label>
+      <select name='method'>
+      <option value='GET'>GET</option>
+      <option value='POST'>POST</option>
+    </select>
+      <label>Parameters</label>
+      <input name='params' type='text'/>
+      <label>Activity Type</label>
+      <input name='activityType' type='number'/>
+      <label>Show Activity?</label>
+      <input name='showActivity' type='checkbox' value="1"/>
+      <label>Auto Trigger Only?</label>
+      <input name='autoTriggerOnly' type='checkbox' value="1"/>
+      <label>Activity Message</label>
+      <input name='activityMessage' type='text'/>
+      <label>Auto Trigger</label>
+      <input name='autoTrigger' type='checkbox' value="1"/>
+      <input type='hidden' name='poiID' value='{{poiID}}'/>
     </form>
     {{/if}}
 
@@ -64,8 +178,8 @@
       </div>
 
       <label>POI Type</label>
-      <select name="poiType">
-        <option value="geo">geo</option>
+      <select id="select-poitype" name="poiType">
+        <option value="geo" selected>geo</option>
         <option value="vision">vision</option>
       </select>
 
@@ -86,10 +200,10 @@
         <input type="url" name="imageURL">
 
         <label>Show Small Brief Information Widget?</label>
-        <input type="checkbox" name="showSmallBiw" checked>
+        <input type="checkbox" name="showSmallBiw" checked value="1">
 
         <label>Show Brief Information Widget on click?</label>
-        <input type="checkbox" name="showBiwOnClick" checked>
+        <input type="checkbox" name="showBiwOnClick" checked value="1">
 
         <label>Brief Information Widget Style</label>
         <select name="biwStyle">

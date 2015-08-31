@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!--
+  nayar/app/templates/index.handlebars
+  https://github.com/thomasrstorey/nayar
+
+  Copyright (c) 2015 thomasrstorey
+  Licensed under the MIT license.
+-->
+<html>
+  {{> head}}
+    <div class="row">
+      <h2>Object: {{id}}</h2>
+      {{#breadcrumbs breadcrumbs 'object'}}{{/breadcrumbs}}
+      <button id="top-save" class="save-button">
+            <i class="fa fa-floppy-o"></i> Save
+      </button>
+    <form id='update' method="post" action="./">
+      <label> ID: {{id}}</label>
+      <label>Content Type</label>
+      <input type='text' name='contentType' value="{{contentType}}"/>
+      <label>URL</label>
+      <input type='url' name='url' value="{{url}}"/>
+      <label>Size</label>
+      <input type='number' name='size' value="{{size}}"/>
+      <label>Preview Image</label>
+      <input type='text' name='previewImage' value="{{previewImage}}"/>
+    </form>
+    <div id="save-row" class="row">
+    <button id="bottom-save" class="save-button">
+          <i class="fa fa-floppy-o"></i> Save
+    </button>
+    </div>
+    </div>
+  {{> foot}}
+</html>

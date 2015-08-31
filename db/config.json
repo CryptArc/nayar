@@ -4,7 +4,8 @@
             "host": "localhost",
             "user": "root",
             "password": "",
-            "database": "nayar_test"
+            "database": "nayar_test",
+            "connectionLimit": 100
         },
         "tables": {
             "User": {
@@ -103,7 +104,7 @@
                         "type": "tinyint",
                         "length": "1",
                         "value": null,
-                        "options": "DEFAULT '1'"
+                        "options": "DEFAULT '0'"
                     },
                     "activityMessage": {
                         "type": "varchar",
@@ -233,7 +234,7 @@
                         "type": "tinyint",
                         "length": "1",
                         "value": null,
-                        "options": "DEFAULT '1'"
+                        "options": "DEFAULT '0'"
                     },
                     "showMessage": {
                         "type": "varchar",
@@ -428,13 +429,13 @@
                         "type": "tinyint",
                         "length": "1",
                         "value": null,
-                        "options": "DEFAULT NULL"
+                        "options": "DEFAULT '0'"
                     },
                     "showBiwOnClick": {
                         "type": "tinyint",
                         "length": "1",
                         "value": null,
-                        "options": "DEFAULT NULL"
+                        "options": "DEFAULT '0'"
                     },
                     "biwStyle": {
                         "type": "enum",
@@ -458,7 +459,7 @@
                         "type": "tinyint",
                         "length": "1",
                         "value": null,
-                        "options": "DEFAULT NULL"
+                        "options": "DEFAULT '0'"
                     },
                     "poiType": {
                         "type": "enum",

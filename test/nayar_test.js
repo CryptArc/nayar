@@ -8,6 +8,8 @@ var vision_response = {};
 var invalid_query = {};
 var invalid_response = {};
 
+var bedonetimer = null;
+
 process.on('uncaughtException', function(err) {
   console.error(err.stack);
 });
@@ -360,6 +362,9 @@ exports['nayar'] = {
     var geo_response = { layer: 'geotest',
      hotspots:
       [ { id: null,
+          showSmallBiw: 0,
+          showBiwOnClick: 0,
+          inFocus: 0,
           imageURL: 'http://trstorey.sysreturn.net/lib/img/bioav.png',
           text:
            { title: 'nayartest',
@@ -374,7 +379,7 @@ exports['nayar'] = {
                params: null,
                activityType: 1,
                autoTriggerOnly: 0,
-               showActivity: 1,
+               showActivity: 0,
                activityMessage: null,
                autoTrigger: 0 } ],
           animations:
@@ -507,6 +512,9 @@ exports['nayar'] = {
     var vis_response = { layer: 'vistest',
      hotspots:
       [ { id: null,
+          showSmallBiw: 0,
+          showBiwOnClick: 0,
+          inFocus: 0,
           anchor: {  referenceImage: "testimg" },
           actions:
            [ { uri: 'http://test.test.com/test2.txt',
@@ -516,7 +524,7 @@ exports['nayar'] = {
                params: null,
                activityType: 1,
                autoTriggerOnly: 0,
-               showActivity: 1,
+               showActivity: 0,
                activityMessage: null,
                autoTrigger: 0 } ],
           animations:
@@ -627,6 +635,12 @@ exports['nayar'] = {
     });
   },
   tearDown : function (done) {
+    function bedone(done){
+      console.log("teardown");
+      nayar.close();
+    }
+    if(bedonetimer) clearTimeout(bedonetimer);
+    bedonetimer = setTimeout(bedone, 1000);
     done();
   }
 }

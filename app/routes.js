@@ -22,6 +22,34 @@ module.exports = function(app){
 
   hbs.registerPartials(__dirname + '/templates/partials');
 
+  hbs.registerHelper('selected', function(selected, actual){
+    if(selected === actual){
+      return new hbs.SafeString("selected");
+    } else {
+      return new hbs.SafeString("");
+    }
+  });
+
+  hbs.registerHelper('breadcrumbs', function(bcs, table){
+    var markup = "<p class='breadcrumbs'><a href='/layers/'>Layers</a> "+
+    "<i class='fa fa-angle-double-right'></i> ";
+    if(bcs.layer){
+      markup += "<a class='breadcrumb-link' href='/layer/"+
+      bcs.layer.id+"'>"+bcs.layer.name+"</a> "+
+      "<i class='fa fa-angle-right'></i> ";
+    }
+    if(bcs.poi){
+      markup += "<a class='breadcrumb-link' href='/poi/"+
+      bcs.poi.id+"'>"+bcs.poi.name+"</a> "+
+      "<i class='fa fa-angle-right'></i> ";
+    }
+    if(bcs[table] && (table !== 'poi' && table !== 'layer')){
+      markup +="<a class='breadcrumb-link' href='/"+table+"/"+bcs[table].id+
+      "'>"+bcs[table].name+"</a>";
+    }
+    return new hbs.SafeString(markup+"</p>");
+  });
+
   // API Endpoints
 
 
@@ -30,14 +58,14 @@ module.exports = function(app){
 
   app.post('/register',
     passport.authenticate('local-register', { successRedirect: '/?auth=1',
-                                              failureRedirect: '/register',
-                                              failureFlash: true})
+                                 failureRedirect: '/register',
+                                 failureFlash: true})
   );
 
   app.post('/login',
-           passport.authenticate('local-login', { successRedirect: '/?auth=1',
-                                                  failureRedirect: '/login',
-                                                  failureFlash: true})
+        passport.authenticate('local-login', { successRedirect: '/?auth=1',
+                                   failureRedirect: '/login',
+                                   failureFlash: true})
   );
 
   app.get('/register', function(req, res){
@@ -77,7 +105,6 @@ module.exports = function(app){
   });
 
   app.get('/layer/:id', protect, function(req, res){
-    console.log("get layer: " + req.params.id);
     var query = { table:'Layer',
                    action:'get',
                    id: req.params.id };
@@ -88,13 +115,11 @@ module.exports = function(app){
       } else {
         layer.poiType = {geo:false, vision:true};
       }
-      console.dir(layer);
       query = { table: 'Poi',
                 action:'get',
                 layerID: req.params.id };
       nayar.do(query, function(err, pois){
         var counts = [];
-        console.dir(pois);
         if(pois.length){
           pois.forEach(function(poi, key){
             var animQuery = { table: 'Animation',
@@ -107,25 +132,29 @@ module.exports = function(app){
             // IIFE to close over poi value
             (function IIFE(){
               nayar.do(animQuery, function(err, anims){
-              console.dir(anims);
-              nayar.do(actionQuery, function(err, actions){
-                console.dir(actions);
-                counts.push({ id: poi.id,
-                              animationNum: anims.length,
-                              actionNum: actions.length });
-                if(counts.length === pois.length){
-                  // match anim and action counts to pois
-                  pois = pois.map(function(v, i){
-                    v.animationNum = _.pluck(_.where( counts,
-                                                      {id:v.id}),
-                                                      'animationNum');
-                    v.actionNum = _.pluck(_.where( counts,
-                                                   {id:v.id}),
-                                                   'actionNum');
-                    return v;
-                  });
-                  var locals = { layer: layer, pois: pois };
-                  res.render('layer.hbs',
+                nayar.do(actionQuery, function(err, actions){
+                  counts.push({ id: poi.id,
+                                animationNum: anims.length,
+                                actionNum: actions.length });
+                  if(counts.length === pois.length) {
+                    // match anim and action counts to pois
+                    pois = pois.map(function(v, i){
+                      v.animationNum = _.pluck(_.where(counts,
+                                             {id:v.id}),
+                                             'animationNum');
+                      v.actionNum = _.pluck(_.where( counts,
+                                            {id:v.id}),
+                                            'actionNum');
+                      return v;
+                    });
+                    var locals = { layer: layer, pois: pois };
+                    if(req.query.saved){
+                      locals.saved = true;
+                    }
+                    getBreadcrumbs(locals, 'layer', req.params.id,
+                    function(breadcrumbs){
+                      locals.breadcrumbs = breadcrumbs;
+                      res.render('layer.hbs',
                               locals,
                               function renderCallback(err, html){
                                 if(err){
@@ -133,29 +162,37 @@ module.exports = function(app){
                                   res.status(500).send(errortext);
                                 }
                                 res.send(html);
-                  });
-                }
+                      });
+                    });
+                  }
+                });
               });
-            })})(poi, animQuery, actionQuery);
-
+            })(poi, animQuery, actionQuery);
           });
         } else {
           var locals = { layer: layer, pois: [] };
-          res.render('layer.hbs',
-                      locals,
-                      function renderCallback(err, html){
-                        if(err){
-                          console.error(err);
-                          res.status(500).send(errortext);
-                        }
-                        res.send(html);
+          if(req.query.saved){
+            locals.saved = true;
+          }
+          getBreadcrumbs(locals, 'layer',
+                    req.params.id, function(breadcrumbs){
+            locals.breadcrumbs = breadcrumbs;
+            res.render('layer.hbs',
+                        locals,
+                        function renderCallback(err, html){
+                          if(err){
+                            console.error(err);
+                            res.status(500).send(errortext);
+                          }
+                          res.send(html);
+            });
           });
         }
       });
     });
   });
 
-  app.get('/poi/:id', function(req, res){
+  app.get('/poi/:id', protect, function(req, res){
     var query = { table:'Poi',
                    action:'get',
                    id: req.params.id };
@@ -190,14 +227,21 @@ module.exports = function(app){
                              transform: transform,
                              actions: actions,
                              animations: animations };
-              res.render('poi.hbs',
-                          locals,
-                          function renderCallback(err, html){
-                            if(err){
-                              console.error(err);
-                              res.status(500).send(errortext);
-                            }
-                            res.send(html);
+              if(req.query.saved){
+                locals.saved = true;
+              }
+              getBreadcrumbs(locals, 'poi', req.params.id,
+              function(breadcrumbs){
+                locals.breadcrumbs = breadcrumbs;
+                res.render('poi.hbs',
+                            locals,
+                            function renderCallback(err, html){
+                              if(err){
+                                console.error(err);
+                                res.status(500).send(errortext);
+                              }
+                              res.send(html);
+                });
               });
             });
           });
@@ -231,7 +275,7 @@ module.exports = function(app){
     });
   });
 
-  app.post('/new/:table', function(req, res){
+  app.post('/new/:table', protect, function(req, res){
     if(req.params.table === 'poi'){
       newPOI(req, res);
     } else {
@@ -250,7 +294,6 @@ module.exports = function(app){
   });
 
   function newPOI(req, res){
-    console.log("new poi");
     var objq = extractOptionalForm('object', req.body);
     if(objq){
       objq.table = 'Object';
@@ -270,7 +313,7 @@ module.exports = function(app){
       if(!this[index]){
         this[index] = {table: 'Action', action: 'set'};
       }
-      this[index][key.slice(-2)] = value;
+      this[index][key.slice(0, -2)] = value;
     }, actqs);
 
     var animationsQs = extractOptionalForm('animation', req.body);
@@ -280,7 +323,7 @@ module.exports = function(app){
       if(!this[index]){
         this[index] = {table: 'Animation', action: 'set'};
       }
-      this[index][key.slice(-2)] = value;
+      this[index][key.slice(0, -2)] = value;
     }, aniqs);
 
     var objid = null,
@@ -290,40 +333,36 @@ module.exports = function(app){
     var query = { table: _.capitalize(req.params.table),
                   action: 'set'};
     query = _.assign(query, _.omit(req.body, function(value, key){
-      return (_.startsWith(key, 'object_') || _.startsWith(key, 'transform_'))
-          || (_.startsWith(key, 'action_') || _.startsWith(key, 'animation_'));
+      return (_.startsWith(key, 'object_') || _.startsWith(key,'transform_'))
+      || (_.startsWith(key, 'action_') || _.startsWith(key, 'animation_'));
     }));
-    console.log("queries ready");
     // first insert object and transform. Save insertIds from each insertion.
     // then insert the poi, setting the object and transform ids appropriately.
     // save the insertId from the poi as well.
     // then insert the animations and actions, setting their poiIds appropriately.
-    if(objq){
+    if(objq && !trnq){
       nayar.do(objq, function(err, results){
         objid = results.insertId;
-        count++;
-        if(count === 2){
-          insertPOI(query, insertArrays);
-        }
+        insertPOI(query, insertArrays);
       });
-    }
-    if(trnq){
+    } else if(trnq && !objq){
       nayar.do(trnq, function(err, results){
         trnid = results.insertId;
-        count++;
-        if(count === 2){
-          insertPOI(query, insertArrays);
-        }
+        insertPOI(query, insertArrays);
       });
-    }
-
-    if(!objq && !trnq){
-      console.log("no obj no trn");
+    } else if(trnq && objq){
+      nayar.do(trnq, function(err, results){
+        trnid = results.insertId;
+        nayar.do(objq, function(err, results){
+          objid = results.insertId;
+          insertPOI(query, insertArrays);
+        });
+      });
+    } else {
       insertPOI(query, insertArrays);
     }
 
     function insertPOI(q, cb){
-      console.log("insert poi");
       q.objectID = objid;
       q.transformID = trnid;
       nayar.do(q, function(err, results){
@@ -334,7 +373,6 @@ module.exports = function(app){
           });
         } else {
           process.nextTick(function(){
-            console.log("redirect!");
             res.redirect("/poi/"+poiID);
           });
         }
@@ -342,7 +380,6 @@ module.exports = function(app){
     };
 
     function insertArrays(poiID, cb){
-      console.log("insert arrays");
       var total = aniqs.length + actqs.length;
       var count = 0;
       aniqs.forEach(function(q, i){
@@ -362,18 +399,143 @@ module.exports = function(app){
     };
   };
 
-  app.delete('/:table/:id', function(req, res){
+  app.get('/:table/:id', protect, function (req, res) {
     var query = { table: _.capitalize(req.params.table),
-                  action: 'delete',
+                  action: 'get',
                   id: req.params.id };
     nayar.do(query, function(err, results){
-      if(err){
-        console.error(err);
-        res.status(500).send(errortext);
-      } else {
-        res.redirect("./");
+      var locals = results[0];
+      if(req.query.saved){
+        locals.saved = true;
       }
+      getBreadcrumbs(locals, req.params.table, req.params.id,
+        function(breadcrumbs){
+        locals.breadcrumbs = breadcrumbs;
+        res.render(req.params.table+'.hbs',
+                   locals,
+                   function renderCallback(err, html){
+                     if(err){
+                       console.error(err);
+                       res.status(500).send(errortext);
+                     } else {
+                       res.send(html);
+                     }
+        });
+      });
     });
+  });
+
+  app.post('/:table/:id', protect, function (req, res) {
+    var query = { table: _.capitalize(req.params.table),
+                  action: 'update',
+                  id: req.params.id };
+    _.assign(query, req.body);
+    nayar.do(query, function(err, results){
+      res.redirect('/'+req.params.table+'/'+req.params.id+'?saved=1');
+    });
+  });
+
+  app.delete('/:table/:id', protect, function(req, res){
+    if(req.params.table === 'object' ||
+       req.params.table === 'transform'){
+      //  need to set poi params to null
+      var query = { table: 'Poi', action: 'get' };
+      query[req.params.table+"ID"] = req.params.id;
+      nayar.do(query, function(err, result){
+        query = { table: 'Poi', action: 'update', id: result[0].id };
+        query[req.params.table+"ID"] = null;
+        nayar.do(query, function(err, result){
+          query = { table: _.capitalize(req.params.table),
+                        action: 'delete',
+                        id: req.params.id };
+          nayar.do(query, function(err, results){
+            if(err){
+              console.error(err);
+              res.status(500).send(errortext);
+            } else {
+              res.redirect("./");
+            }
+          });
+        });
+      });
+    } else if(req.params.table === 'poi'){
+      // delete all related objects, transforms, actions and animations
+      var query = { table: 'Poi', action: 'get', id: req.params.id };
+      nayar.do(query, function(err, result){
+        var deleteqs = [{ table: 'Object',
+                        action: 'delete',
+                        id: result[0].objectID },
+                       { table: 'Transform',
+                        action: 'delete',
+                        id: result[0].transformID },
+                       { table: 'Action',
+                        action: 'delete',
+                        poiID: req.params.id },
+                       { table: 'Animation',
+                        action: 'delete',
+                        poiID: req.params.id }];
+        _.each(deleteqs, function(v, k){
+          nayar.do(v, function(err, result){
+          });
+        });
+        query = { table: _.capitalize(req.params.table),
+                      action: 'delete',
+                      id: req.params.id };
+        nayar.do(query, function(err, results){
+          if(err){
+            console.error(err);
+            res.status(500).send(errortext);
+          } else {
+            res.redirect("./");
+          }
+        });
+      });
+    } else if(req.params.table === 'layer'){
+      // delete all related pois, and their objects, transforms...etc
+      var query = { table: 'Layer', action: 'get', id: req.params.id };
+      nayar.do(query, function(err, result){
+        // this will delete all the POIs attached to the layer,
+        // but we need to go through all of them and
+        var deleteqs = [{ table: 'Poi',
+                        action: 'delete',
+                        layerID: result[0].id}];
+        query = { table: 'Poi',
+                  action: 'get',
+                  layerID: result[0].id };
+        nayar.do(query, function(err, result){
+          _.each(result, function(v, k){
+            deleteqs.push({ table: 'Object',
+                            action: 'delete',
+                            id: v.objectID });
+            deleteqs.push({ table: 'Transform',
+                            action: 'delete',
+                            id: v.transformID });
+            deleteqs.push({ table: 'Action',
+                            action: 'delete',
+                            poiID: v.id });
+            deleteqs.push({ table: 'Animation',
+                            action: 'delete',
+                            poiID: v.id });
+          });
+          _.each(deleteqs, function(v, k){
+            nayar.do(v, function(err, result){
+            });
+          });
+          query = { table: _.capitalize(req.params.table),
+                        action: 'delete',
+                        id: req.params.id };
+          nayar.do(query, function(err, results){
+            if(err){
+              console.error(err);
+              res.status(500).send(errortext);
+            } else {
+              res.redirect("./");
+            }
+          });
+        });
+      });
+    }
+
   });
 
   app.get('/', function(req, res){
@@ -385,14 +547,65 @@ module.exports = function(app){
     });
   });
 
+  function getBreadcrumbs(locals, table, id, cb){
+    if(table === 'layer'){
+      process.nextTick(function(){
+        return cb({ layer: {name:locals.layer.layer, id:id} });
+      });
+    } else if(table === 'poi'){
+      var q = { table: 'Layer', action: 'get', id: locals.poi.layerID };
+      nayar.do(q, function(err, results){
+        var layer = results[0];
+        var bc = { layer: {name:layer.layer, id:layer.id },
+                   poi: {name: "poi: "+ locals.poi.id,
+                       id: locals.poi.id } };
+        cb(bc);
+      });
+    } else if(table === 'object' || table === 'transform'){
+        var Table = _.capitalize(table);
+        var q = { table: 'Poi', action: 'get' };
+        q[Table+"ID"] = id;
+        nayar.do(q, function(err, results){
+          var poi = results[0];
+          if(poi){
+            q = { table: 'Layer', action: 'get', id: poi.layerID };
+            nayar.do(q, function(err, results){
+              var layer = results[0];
+              var bc = { layer: {name: layer.layer, id: layer.id },
+                         poi: {name: "poi: " + poi.id, id: poi.id } };
+              bc[table] = { name: table+": "+id, id: id };
+              return cb(bc);
+            });
+          } else {
+            // this object or transform is orphaned!
+            return cb({});
+          }
+        });
+    } else if(table === 'animation' || table === 'action'){
+      var q = { table: 'Poi', action: 'get', id: locals.poiID};
+      nayar.do(q, function(err, results){
+        var poi = results[0];
+        q = { table: 'Layer', action: 'get', id: poi.layerID };
+        nayar.do(q, function(err, results){
+          var layer = results[0];
+          var bc = { layer: { name: layer.layer, id: layer.id },
+                     poi: { name: "poi: " + poi.id, id: id } };
+              bc[table] = { name: table + ": " + id, id: id };
+          return cb(bc);
+        })
+      });
+    }
+  };
+
   function extractOptionalForm(table, reqbody){
     var identifier = table+'_';
     var form = _.mapKeys( _.pick(reqbody, function(value, key){
       return _.startsWith(key, identifier);
     }), function(value, key){
-      return key.slice(table.length);
+      var newkey = key.slice(identifier.length);
+      return newkey;
     });
-    if(!form.length){
+    if(!_.keys(form).length){
       return null;
     } else {
       return form;

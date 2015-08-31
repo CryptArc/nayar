@@ -10,10 +10,10 @@
   {{> head}}
     <div class="row">
       <h2>Layers</h2>
-      <button id="top-add" class="button-primary" onclick="addNew({table:'layer'});">
-        <i class="fa fa-plus-square-o"></i> New Layer
-      </button>
     {{#if layers}}
+    <button id="top-add" class="button-primary" onclick="addNew({table:'layer'});">
+      <i class="fa fa-plus-square-o"></i> New Layer
+    </button>
     <table>
       <tr id="header-row">
         <th>ID</th><th>Name</th><th>Type</th><th>Delete</th>
@@ -28,7 +28,7 @@
     {{/each}}
     </table>
     {{else}}
-    <h3>No layers yet. Click the Add New button below to add a new layer.</h3>
+    <p><strong>No layers yet.</strong></p>
     {{/if}}
     <button id="bottom-add" class="button-primary" onclick="addNew({table:'layer'});">
       <i class="fa fa-plus-square-o"></i> New Layer

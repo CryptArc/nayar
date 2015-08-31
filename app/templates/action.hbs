@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--
+  nayar/app/templates/index.handlebars
+  https://github.com/thomasrstorey/nayar
+
+  Copyright (c) 2015 thomasrstorey
+  Licensed under the MIT license.
+-->
+<html>
+  {{> head}}
+    <div class="row">
+      <h2>Action: {{id}}</h2>
+      {{#breadcrumbs breadcrumbs 'action'}}{{/breadcrumbs}}
+      {{#if saved}}
+      <p class="message">Action successfully saved.</p>
+      {{/if}}
+      <button id="top-save" class="save-button">
+            <i class="fa fa-floppy-o"></i> Save
+      </button>
+    <form id='update' method="post" action="/action/{{id}}">
+      <label> ID: {{id}}</label>
+      <label>URI</label>
+      <input name='uri' type='text' value="{{uri}}"/>
+      <label>Label</label>
+      <input name='label' type='text' value="{{label}}"/>
+      <label>Content Type</label>
+      <input name='contentType' type='text' value="{{contentType}}"/>
+      <label>Method</label>
+      <select name='method'>
+      <option value='GET' {{#selected method 'GET'}}{{/selected}}>GET</option>
+      <option value='POST' {{#selected type 'POST'}}{{/selected}}>POST</option>
+    </select>
+      <label>Parameters</label>
+      <input name='params' type='text' value="{{params}}"/>
+      <label>Activity Type</label>
+      <input name='activityType' type='number' value="{{activityType}}"/>
+      <label>Show Activity?</label>
+      <input name='showActivity' type='checkbox' {{#if showActivity}}checked{{/if}}/>
+      <label>Auto Trigger</label>
+      <input name='autoTrigger' type='checkbox' {{#if autoTrigger}}checked{{/if}}/>
+      <label>Auto Trigger Only?</label>
+      <input name='autoTriggerOnly' type='checkbox' {{#if autoTriggerOnly}}checked{{/if}}/>
+      <label>Activity Message</label>
+      <input name='activityMessage' type='text' value="{{activityMessage}}"/>
+    </form>
+    <div id="save-row" class="row">
+    <button id="bottom-save" class="save-button">
+          <i class="fa fa-floppy-o"></i> Save
+    </button>
+    </div>
+    </div>
+  {{> foot}}
+</html>
