@@ -285,18 +285,39 @@ module.exports = function(app){
   });
 
   app.post('/new/:table', protect, function(req, res){
+    var query;
     if(req.params.table === 'poi'){
       newPOI(req, res);
+    } else if(req.params.table === 'object'
+    || req.params.table === 'transform') {
+      var poiID = req.body.poiID;
+      query = { table: _.capitalize(req.params.table),
+                    action: 'set'};
+      query = _.assign(query, _.omit(req.body, 'poiID'));
     } else {
-      var query = { table: _.capitalize(req.params.table),
+      query = { table: _.capitalize(req.params.table),
                     action: 'set'};
       query = _.assign(query, req.body);
+    }
+    if(req.params.table !== 'poi'){
       nayar.do(query, function(err, results){
         if(err){
           console.error(err);
           res.status(500).send(errortext);
         } else {
-          res.redirect("/"+req.params.table+"/"+results.insertId);
+          if(req.params.table === 'object'
+          || req.params.table === 'transform') {
+            var updateq = { table: 'Poi',
+                       action: 'update',
+                       id: poiID };
+            updateq[req.params.table+"ID"] = results.insertId;
+            nayar.do(updateq, function(err, results){
+              res.redirect("/"+req.params.table
+              +"/"+updateq[req.params.table+"ID"]);
+            });
+          } else {
+            res.redirect("/"+req.params.table+"/"+results.insertId);
+          }
         }
       });
     }
