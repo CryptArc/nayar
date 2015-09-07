@@ -20,6 +20,58 @@ module.exports = function(app){
   var errortext = "<p>Sorry, nayar dashboard encountered a server error.</p>";
   var config = jsf.readFileSync(path.join(__dirname, '../lib/config.json'));
 
+  var DEFAULTS = {
+    layer: { layer: '',
+           refreshInterval: '0',
+           fullRefresh: '0',
+           showMessage: '',
+           poiType: 'geo'},
+    poi: {
+      showSmallBiw: '0',
+      showBiwOnClick: '0',
+      inFocus: '0'
+    },
+    object: { contentType: '',
+           url: '',
+           size: '',
+           previewImage: ''},
+    transform: {  rel : '0',
+              angle: '0',
+              rotate_x: '0',
+              rotate_y: '0',
+              rotate_z: '0',
+              translate_x: '0',
+              translate_y: '0',
+              translate_z: '0',
+              scale_x: '0',
+              scale_y: '0',
+              scale_z: '0',
+              scale: '0' },
+    animation: { event: 'onCreate',
+             type: 'translate',
+             length: '0',
+             delay: '0',
+             interpolation: 'linear',
+             interpolationParam: '0',
+             persist: '0',
+             repeat: '0',
+             'from': '0',
+             to: '0',
+             axis_x: '0',
+             axis_y: '0',
+             axis_z: '0' },
+    action: { uri: '',
+           label: '',
+           contentType: '',
+           method: 'GET',
+           params: '',
+           activityType: '0',
+           showActivity: '0',
+           autoTrigger: '0',
+           autoTriggerOnly: '0',
+           activityMessage: ''}
+  };
+
   hbs.registerPartials(__dirname + '/templates/partials');
 
   hbs.registerHelper('selected', function(selected, actual){
@@ -293,10 +345,22 @@ module.exports = function(app){
       var poiID = req.body.poiID;
       query = { table: _.capitalize(req.params.table),
                     action: 'set'};
+      req.body = _.defaults(req.body, DEFAULTS[req.params.table]);
+      _.forOwn(req.body, function(v, k, o){
+        if(v === 'on'){
+          o[k] = '1';
+        }
+      });
       query = _.assign(query, _.omit(req.body, 'poiID'));
     } else {
       query = { table: _.capitalize(req.params.table),
                     action: 'set'};
+      req.body = _.defaults(req.body, DEFAULTS[req.params.table]);
+      _.forOwn(req.body, function(v, k, o){
+        if(v === 'on'){
+          o[k] = '1';
+        }
+      });
       query = _.assign(query, req.body);
     }
     if(req.params.table !== 'poi'){
@@ -325,36 +389,12 @@ module.exports = function(app){
 
   function newPOI(req, res){
     var objq = extractOptionalForm('object', req.body);
-    if(objq){
-      objq.table = 'Object';
-      objq.action = 'set';
-    }
 
     var trnq = extractOptionalForm('transform', req.body);
-    if(trnq) {
-      trnq.table = 'Transform';
-      trnq.action = 'set';
-    }
 
-    var actionsQs = extractOptionalForm('action', req.body);
-    var actqs = [];
-    _.each(actionsQs, function(value, key){
-      var index = parseInt(key.slice(-1), 10);
-      if(!this[index]){
-        this[index] = {table: 'Action', action: 'set'};
-      }
-      this[index][key.slice(0, -2)] = value;
-    }, actqs);
+    var actqs = extractOptionalForm('action', req.body);
 
-    var animationsQs = extractOptionalForm('animation', req.body);
-    var aniqs = [];
-    _.each(animationsQs, function(value, key){
-      var index = parseInt(key.slice(-1), 10);
-      if(!this[index]){
-        this[index] = {table: 'Animation', action: 'set'};
-      }
-      this[index][key.slice(0, -2)] = value;
-    }, aniqs);
+    var aniqs = extractOptionalForm('animation', req.body);
 
     var objid = null,
         trnid = null;
@@ -362,6 +402,7 @@ module.exports = function(app){
 
     var query = { table: _.capitalize(req.params.table),
                   action: 'set'};
+    req.body = _.defaults(req.body, DEFAULTS[req.params.table]);
     query = _.assign(query, _.omit(req.body, function(value, key){
       return (_.startsWith(key, 'object_') || _.startsWith(key,'transform_'))
       || (_.startsWith(key, 'action_') || _.startsWith(key, 'animation_'));
@@ -413,6 +454,7 @@ module.exports = function(app){
       var total = aniqs.length + actqs.length;
       var count = 0;
       aniqs.forEach(function(q, i){
+        q.poiID = poiID;
         nayar.do(q, function(err, results){
           if(++count === total){
             return cb();
@@ -420,6 +462,7 @@ module.exports = function(app){
         });
       });
       actqs.forEach(function(q, i){
+        q.poiID = poiID;
         nayar.do(q, function(err, results){
           if(++count === total){
             return cb();
@@ -459,6 +502,13 @@ module.exports = function(app){
     var query = { table: _.capitalize(req.params.table),
                   action: 'update',
                   id: req.params.id };
+    req.body = _.defaults(req.body, DEFAULTS[req.params.table]);
+    _.forOwn(req.body, function(v, k, o){
+      if(v === 'on'){
+        o[k] = '1';
+      }
+    });
+    console.dir(req.body);
     _.assign(query, req.body);
     nayar.do(query, function(err, results){
       res.redirect('/'+req.params.table+'/'+req.params.id+'?saved=1');
@@ -619,7 +669,7 @@ module.exports = function(app){
         nayar.do(q, function(err, results){
           var layer = results[0];
           var bc = { layer: { name: layer.layer, id: layer.id },
-                     poi: { name: "poi: " + poi.id, id: id } };
+                     poi: { name: "poi: " + poi.id, id: poi.id } };
               bc[table] = { name: table + ": " + id, id: id };
           return cb(bc);
         })
@@ -638,6 +688,24 @@ module.exports = function(app){
     if(!_.keys(form).length){
       return null;
     } else {
+      if(table === 'object' || table === 'transform'){
+        form = _.defaults(form, DEFAULTS[table]);
+        form.table = _.capitalize(table);
+        form.action = 'set';
+      } else if(table === 'animation' || table === 'action') {
+        var qs = [];
+        _.each(form, function(value, key){
+          var index = parseInt(key.slice(-1), 10);
+          if(!this[index]){
+            this[index] = {table: _.capitalize(table), action: 'set'};
+          }
+          this[index][key.slice(0, -2)] = value;
+        }, qs);
+        _.each(qs, function(value, index){
+          qs[index] = _.defaults(qs[index], DEFAULTS[table]);
+        });
+        form = qs;
+      }
       return form;
     }
   };
