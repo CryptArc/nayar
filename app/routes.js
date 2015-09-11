@@ -193,7 +193,17 @@ module.exports = function(app){
             // IIFE to close over poi value
             (function IIFE(){
               nayar.do(animQuery, function(err, anims){
+                if(err){
+                  console.error(err);
+                }
+                /*console.log("ANIMS");
+                console.dir(anims);*/
                 nayar.do(actionQuery, function(err, actions){
+                  if(err){
+                    console.error(err);
+                  }
+                  /*console.log("ACTIONS");
+                  console.dir(actions);*/
                   counts.push({ id: poi.id,
                                 animationNum: anims.length,
                                 actionNum: actions.length });
@@ -412,6 +422,7 @@ module.exports = function(app){
     // save the insertId from the poi as well.
     // then insert the animations and actions, setting their poiIds appropriately.
     if(objq && !trnq){
+      console.log("OBJECT QUERY NO TRANSFORM QUERY");
       nayar.do(objq, function(err, results){
         objid = results.insertId;
         insertPOI(query, insertArrays);
@@ -685,8 +696,13 @@ module.exports = function(app){
       var newkey = key.slice(identifier.length);
       return newkey;
     });
+    console.log(table, " --- FORM --- ", form);
     if(!_.keys(form).length){
-      return null;
+      if(table === 'animation' || table === 'action'){
+        return [];
+      } else {
+        return null;
+      }
     } else {
       if(table === 'object' || table === 'transform'){
         form = _.defaults(form, DEFAULTS[table]);
