@@ -11,19 +11,35 @@
     <div class="row">
       <h2>Object: {{id}}</h2>
       {{#breadcrumbs breadcrumbs 'object'}}{{/breadcrumbs}}
+      <div class="row">
       <button id="top-save" class="save-button">
             <i class="fa fa-floppy-o"></i> Save
       </button>
-    <form id='update' method="post" action="/object/{{id}}">
       <label> ID: {{id}}</label>
-      <label>Content Type</label>
-      <input type='text' name='contentType' value="{{contentType}}"/>
-      <label>URL</label>
-      <input type='url' name='url' value="{{url}}"/>
-      <label>Size</label>
-      <input type='number' name='size' value="{{size}}"/>
-      <label>Preview Image</label>
-      <input type='text' name='previewImage' value="{{previewImage}}"/>
+    </div>
+    <form id='update' method="post" action="/object/{{id}}">
+      <div class="row">
+        <div class="row">
+          <div class="four columns">
+            <label>Content Type</label>
+            <input class="u-full-width" type='text' name='contentType' value="{{contentType}}"/>
+          </div>
+          <div class="eight columns">
+            <label>URL</label>
+            <input class="u-full-width" type='url' name='url' value="{{url}}"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="four columns">
+            <label>Size</label>
+            <input class="u-full-width" type='number' name='size'  value="{{size}}"/>
+          </div>
+          <div class="eight columns">
+            <label>Preview Image</label>
+            <input class="u-full-width" type='text' name='previewImage' value="{{previewImage}}"/>
+          </div>
+        </div>
+      </div>
     </form>
     <div id="save-row" class="row">
     <button id="bottom-save" class="save-button">

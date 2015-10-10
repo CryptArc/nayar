@@ -14,30 +14,42 @@
       {{#if saved}}
       <p class="message">Animation successfully saved.</p>
       {{/if}}
+      <div class="row">
       <button id="top-save" class="save-button">
             <i class="fa fa-floppy-o"></i> Save
       </button>
+    </div>
     <form id='update' method="post" action="/animation/{{id}}">
+
+      <div class="row">
+        <div class="three columns">
       <label>Event</label>
-      <select name='event'>
+      <select class="u-full-width" name='event'>
       <option value='onCreate' {{#selected event 'onCreate'}}{{/selected}}>onCreate</option>
       <option value='onUpdate' {{#selected event 'onUpdate'}}{{/selected}}>onUpdate</option>
       <option value='onFocus' {{#selected event 'onFocus'}}{{/selected}}>onFocus</option>
       <option value='onClick' {{#selected event 'onClick'}}{{/selected}}>onClick</option>
       <option value='onDelete' {{#selected event 'onDelete'}}{{/selected}}>onDelete</option>
     </select>
+  </div><div class="three columns">
       <label>Type</label>
-      <select name='type'>
+      <select class="u-full-width" name='type'>
       <option value='translate' {{#selected type 'translate'}}{{/selected}}>translate</option>
       <option value='rotate' {{#selected type 'rotate'}}{{/selected}}>rotate</option>
       <option value='scale' {{#selected type 'scale'}}{{/selected}}>scale</option>
     </select>
+    </div><div class="three columns">
       <label>Length</label>
-      <input type='number' name='length' value="{{length}}"/>
+      <input class="u-full-width" type='number' name='length' value="{{length}}"/>
+      </div><div class="three columns">
       <label>Delay</label>
-      <input type='number' name='delay' value="{{delay}}"/>
+      <input class="u-full-width" type='number' name='delay' value="{{delay}}"/>
+    </div></div>
+
+      <div class="row">
+        <div class="three columns">
       <label>Interpolation</label>
-      <select name='interpolation'>
+      <select class="u-full-width" name='interpolation'>
       <option value='linear' {{#selected interpolation 'linear'}}{{/selected}}>linear</option>
       <option value='accelerateDecelerate' {{#selected interpolation 'accelerateDecelerate'}}{{/selected}}>accelerateDecelerate</option>
       <option value='accelerate' {{#selected interpolation 'accelerate'}}{{/selected}}>accelerate</option>
@@ -48,20 +60,33 @@
       <option value='anticipate' {{#selected interpolation 'anticipate'}}{{/selected}}>anticipate</option>
       <option value='overshoot' {{#selected interpolation 'overshoot'}}{{/selected}}>overshoot</option>
     </select>
+    </div><div class="three columns">
       <label>Interpolation Param</label>
-      <input name='interpolationParam' type='number' value="{{interpolationParam}}"/>
+      <input class="u-full-width" name='interpolationParam' type='number' value="{{interpolationParam}}"/>
+    </div><div class="one column">
       <label>Persist</label>
-      <input name='persist' type='checkbox' {{#if persist}}checked{{/if}}/>
+      <input class="u-full-width" name='persist' type='checkbox' {{#if persist}}checked{{/if}}/>
+    </div><div class="one column">
       <label>Repeat</label>
-      <input name='repeat' type='checkbox' {{#if repeat}}checked{{/if}}/>
+      <input class="u-full-width" name='repeat' type='checkbox'{{#if repeat}}checked{{/if}}/>
+    </div><div class="two columns">
       <label>From</label>
-      <input name='from' type='number' value="{{from}}"/>
+      <input class="u-full-width" name='from' type='number' value="{{from}}"/>
+    </div><div class="two columns">
       <label>To</label>
-      <input name='to' type='number' value="{{to}}"/>
+      <input class="u-full-width" name='to' type='number' value="{{to}}"/>
+    </div></div>
+
+      <div class="row">
       <label>Axis</label>
-      <input name='axis_x' type='number' placeholder='x' value="{{axis_x}}"/>
-      <input name='axis_y' type='number' placeholder='y' value="{{axis_y}}"/>
-      <input name='axis_z' type='number' placeholder='z' value="{{axis_z}}"/>
+      <div class="row">
+        <div class="four columns">
+      <input class="u-full-width" name='axis_x' type='number' placeholder='x' value="{{axis_x}}"/>
+      </div><div class="four columns">
+      <input class="u-full-width" name='axis_y' type='number' placeholder='y' value="{{axis_y}}"/>
+      </div><div class="four columns">
+      <input class="u-full-width" name='axis_z' type='number' placeholder='z' value="{{axis_z}}"/>
+    </div></div></div>
     </form>
     <div id="save-row" class="row">
     <button id="bottom-save" class="save-button">

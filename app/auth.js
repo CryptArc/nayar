@@ -28,12 +28,33 @@ module.exports = function(passport){
   passport.use('local-register', new LocalStrategy({
     passReqToCallback : true
   }, function (req, username, password, done){
-      nayar.do({table : 'User', action : 'get', username : username},
+      nayar.do({table : 'User', action : 'get'},
       function(err, rows){
         if(err) return done(err);
         if(rows.length) {
-          return done(null, false,
-                      req.flash('registermsg', 'Username already in use.'));
+          rows.forEach(function(v){
+            if(v.username === username){
+              return done(null, false,
+                  req.flash('registermsg', 'Username already in use.'));
+            }
+          });
+          var salt = uuid.v1();
+          var passhash = hash(password, salt);
+          nayar.do({table : 'User',
+                      action : 'set',
+                      username : username,
+                      passhash : passhash,
+                      salt : salt,
+                      role : "user",
+                      active: 0},
+                      function(err, result){
+                        if(err) return done(err);
+                        return done(null, {
+                          id : result.insertId,
+                          username : username,
+                          password : password
+                        });
+                      });
         } else {
           var salt = uuid.v1();
           var passhash = hash(password, salt);
@@ -41,7 +62,9 @@ module.exports = function(passport){
                       action : 'set',
                       username : username,
                       passhash : passhash,
-                      salt : salt},
+                      salt : salt,
+                      role : "admin",
+                      active: 1},
                       function(err, result){
                         if(err) return done(err);
                         return done(null, {
@@ -62,11 +85,11 @@ module.exports = function(passport){
                    if(err) return done(err);
                    if(!rows.length){
                      return done(null, false,
-                                 req.flash('loginmsg', 'User not found.'));
+                          req.flash('loginmsg', 'User not found.'));
                    }
                    if(!isValidPassword(password, rows[0])){
                      return done(null, false,
-                                 req.flash('loginmsg', 'Wrong password.'))
+                          req.flash('loginmsg', 'Wrong password.'));
                    }
                    return done(null, {
                      id : rows[0].id,

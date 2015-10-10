@@ -14,34 +14,54 @@
       {{#if saved}}
       <p class="message">Action successfully saved.</p>
       {{/if}}
+      <div class="row">
       <button id="top-save" class="save-button">
             <i class="fa fa-floppy-o"></i> Save
       </button>
-    <form id='update' method="post" action="/action/{{id}}">
       <label> ID: {{id}}</label>
+    </div>
+    <form id='update' method="post" action="/action/{{id}}">
+
+      <div class="row">
+        <div class="four columns">
       <label>URI</label>
-      <input name='uri' type='text' value="{{uri}}"/>
+      <input class="u-full-width" name='uri' type='text' value="{{uri}}"/>
+    </div><div class="four columns">
       <label>Label</label>
-      <input name='label' type='text' value="{{label}}"/>
+      <input class="u-full-width" name='label' type='text' value="{{label}}"/>
+    </div><div class="four columns">
       <label>Content Type</label>
-      <input name='contentType' type='text' value="{{contentType}}"/>
+      <input class="u-full-width" name='contentType' type='text' value="{{contentType}}"/>
+    </div></div>
+
+      <div class="row">
+        <div class="four columns">
       <label>Method</label>
-      <select name='method'>
+      <select class="u-full-width" name='method'>
       <option value='GET' {{#selected method 'GET'}}{{/selected}}>GET</option>
-      <option value='POST' {{#selected type 'POST'}}{{/selected}}>POST</option>
+      <option value='POST' {{#selected method 'POST'}}{{/selected}}>POST</option>
     </select>
+    </div><div class="four columns">
       <label>Parameters</label>
-      <input name='params' type='text' value="{{params}}"/>
+      <input class="u-full-width" name='params' type='text' value="{{params}}"/>
+      </div><div class="four columns">
       <label>Activity Type</label>
-      <input name='activityType' type='number' value="{{activityType}}"/>
+      <input class="u-full-width" name='activityType' type='number' value="{{activityType}}"/>
+    </div></div>
+    <div class="row">
+      <div class="one column">
       <label>Show Activity?</label>
       <input name='showActivity' type='checkbox' {{#if showActivity}}checked{{/if}}/>
-      <label>Auto Trigger</label>
-      <input name='autoTrigger' type='checkbox' {{#if autoTrigger}}checked{{/if}}/>
+    </div><div class="two columns">
       <label>Auto Trigger Only?</label>
       <input name='autoTriggerOnly' type='checkbox' {{#if autoTriggerOnly}}checked{{/if}}/>
+      </div><div class="eight columns">
       <label>Activity Message</label>
-      <input name='activityMessage' type='text' value="{{activityMessage}}"/>
+      <input class="u-full-width" name='activityMessage' type='text' value="{{activityMessage}}"/>
+      </div><div class="one column">
+      <label>Auto Trigger</label>
+      <input name='autoTrigger' type='checkbox' {{#if autoTrigger}}checked{{/if}}/>
+    </div></div>
     </form>
     <div id="save-row" class="row">
     <button id="bottom-save" class="save-button">

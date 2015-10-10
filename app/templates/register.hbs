@@ -9,36 +9,49 @@
 <html>
   {{> head}}
     <div class="row">
-    {{#if locked}}
-    <p>An admin user has already been created for this nayar web server.
-    To make a new user, first delete the current admin from your database.
-    Then you will be able to create a new one on this page.</p>
-    {{else if user}}
-    <p>You are already logged in as {{user.username}}. Only one admin user is
-      allowed.</p>
-    {{else}}
-    {{#if message}}
-    <p>{{message}}</p>
-    {{/if}}
-    <form action="/register" method="post">
-      <div>
-          <label>Username:</label>
-          <input type="text" name="username"/>
+      <div class="two-thirds column">
+        {{#if user}}
+        <p>You are currently logged in as {{user.username}}.</p>
+        {{else}}
+        {{#if message}}
+        <p>{{message}}</p>
+        {{/if}}
+        <form action="/register" method="post">
+          <div class="row">
+            <div class="twelve columns">
+                <label>Username:</label>
+                <input class="u-full-width" type="text" name="username"/>
+            </div>
+          </div>
+          <div class="row">
+            <div class="one-half column">
+                <label>Password:</label>
+                <input class="u-full-width" type="password" name="password"/>
+            </div>
+            <div  class="one-half column">
+                <label>Confirm Password:</label>
+                <input class="u-full-width" type="password" name="password-confirm"/>
+            </div>
+          </div>
+          <div class="row">
+            <div class="u-full-width">
+              <label></label>
+                <input type="submit" value="Register"/>
+            </div>
+          </div>
+        </form>
+        {{/if}}
       </div>
-      <div>
-          <label>Password:</label>
-          <input type="password" name="password"/>
+      <div class="one-third column">
+        {{#if locked}}
+        <p>An admin user has already been created for this nayar web server.
+        All subsequent users will only have normal user privileges.</p>
+        {{else}}
+        <p>This nayar web server currently has no admin account. The first
+        user you create will be given admin privileges. After that, all
+        users created will have normal user privileges.</p>
+        {{/if}}
       </div>
-      <div>
-          <label>Confirm Password:</label>
-          <input type="password" name="password-confirm"/>
-      </div>
-      <div>
-        <label></label>
-          <input type="submit" value="Register"/>
-      </div>
-    </form>
-    {{/if}}
     </div>
   {{> foot}}
 </html>

@@ -14,28 +14,52 @@
       {{#if saved}}
       <p class="message">Transform successfully saved.</p>
       {{/if}}
+      <div class="row">
       <button id="top-save" class="save-button">
             <i class="fa fa-floppy-o"></i> Save
       </button>
-    <form id='update' method="post" action="/transform/{{id}}">
       <label> ID: {{id}}</label>
+    </div>
+    <form id='update' method="post" action="/transform/{{id}}">
+
+      <div class="row">
+        <div class="two columns">
       <label>Relative?</label>
       <input type='checkbox' name='rel' {{#if rel}} checked {{/if}}/>
+      </div><div class="ten columns">
       <label>Angle</label>
-      <input type='number' name='angle' value="{{angle}}"/>
+      <input class="u-full-width" type='number' name='angle' value="{{angle}}"/>
+      </div></div>
+      <div class="row">
       <label>Rotation</label>
-      <input type='number' name='rotate_x' placeholder='x' value="{{rotate_x}}"/>
-      <input type='number' name='rotate_y' placeholder='y' value="{{rotate_y}}"/>
-      <input type='number' name='rotate_z' placeholder='z' value="{{rotate_z}}"/>
+      <div class="row">
+        <div class="four columns">
+      <input class="u-full-width" type='number' name='rotate_x' placeholder='x' value="{{rotate_x}}"/>
+    </div><div class="four columns">
+      <input class="u-full-width" type='number' name='rotate_y' placeholder='y' value="{{rotate_y}}"/>
+      </div><div class="four columns">
+      <input class="u-full-width" type='number' name='rotate_z' placeholder='z' value="{{rotate_z}}"/>
+    </div></div><div class="row">
       <label>Translation</label>
-      <input type='number' name='translate_x' placeholder='x' value="{{translate_x}}"/>
-      <input type='number' name='translate_y' placeholder='y' value="{{translate_y}}"/>
-      <input type='number' name='translate_z' placeholder='z' value="{{translate_z}}"/>
+      <div class="row">
+        <div class="four columns">
+      <input class="u-full-width" type='number' name='translate_x' placeholder='x' value="{{translate_x}}"/>
+      </div><div class="four columns">
+      <input class="u-full-width" type='number' name='translate_y' placeholder='y' value="{{translate_y}}"/>
+      </div><div class="four columns">
+      <input class="u-full-width" type='number' name='translate_z' placeholder='z' value="{{translate_z}}"/>
+    </div></div><div class="row">
       <label>Scale</label>
-      <input type='number' name='scale_x' placeholder='x' value="{{scale_x}}"/>
-      <input type='number' name='scale_y' placeholder='y' value="{{scale_y}}"/>
-      <input type='number' name='scale_z' placeholder='z' value="{{scale_z}}"/>
-      <input type='number' name='scale' placeholder='uniform' value="{{scale}}"/>
+      <div class="row">
+        <div class="three columns">
+      <input class="u-full-width" type='number' name='scale_x' placeholder='x' value="{{scale_x}}"/>
+    </div><div class="three columns">
+      <input class="u-full-width" type='number' name='scale_y' placeholder='y' value="{{scale_y}}"/>
+    </div><div class="three columns">
+      <input class="u-full-width" type='number' name='scale_z' placeholder='z' value="{{scale_z}}"/>
+    </div><div class="three columns">
+      <input class="u-full-width" type='number' name='scale' placeholder='uniform' value="{{scale}}"/>
+    </div></div></div>
     </form>
     <div id="save-row" class="row">
     <button id="bottom-save" class="save-button">

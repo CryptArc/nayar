@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!--
+  nayar/app/templates/index.handlebars
+  https://github.com/thomasrstorey/nayar
+
+  Copyright (c) 2015 thomasrstorey
+  Licensed under the MIT license.
+-->
+<html>
+  {{> head}}
+    <div class="row">
+    <h4>Version</h4>
+      <p>1.1</p>
+    <h4>Recent Changes</h4>
+    <ul>
+      <li>Improved stability</li>
+      <li>User system - first user is admin, subsequent users are users. Users have elevated privileges, like the ability to see/edit any layer and the ability to delete and activate other users. Regular users can only see their own layers and cannot manage user info.</li>
+      <li>All forms are now formatted to fit on screen more nicely and be more readable</li>
+      <li>This help page now exists, so it won't explode when you click the help link at the bottom of each page.</li>
+    </ul>
+    <h4>Repository</h4>
+    <a href="http://github.com/thomasrstorey/nayar/">github</a>
+    <h4>Contributors</h4>
+    <p>Thomas R Storey | <a href="http://github.com/thomasrstorey/">github</a> <a href="mailto:storey.thomas@gmail.com">email</a></p>
+    </div>
+  {{> foot}}
+</html>

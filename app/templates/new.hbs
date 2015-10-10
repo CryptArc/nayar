@@ -12,81 +12,141 @@
       <h2>New {{table}}</h2>
     {{#if layer}}
     <form id="new" method="post" action="./">
-      <label>Layer Name</label>
-      <input type="text" name="layer" />
-      <label>Refresh Interval</label>
-      <input type="number" name="refreshInterval"/>
-      <label>Full Refresh</label>
-      <input type="checkbox" name="fullRefresh" value="1"/>
-      <label>Message</label>
-      <input type="text" name="showMessage"/>
-      <label>POI Type</label>
-      <select name="poiType">
-        <option value="geo">geo</option>
-        <option value="vision">vision</option>
-      </select>
+      <div class="row">
+        <div class="twelve columns">
+          <label>Layer Name</label>
+          <input class="u-full-width" type="text" name="layer" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="eight columns">
+          <label>Refresh Interval</label>
+          <input class="u-full-width" type="number" name="refreshInterval"/>
+        </div>
+        <div class="four columns">
+          <label>Full Refresh</label>
+          <input type="checkbox" name="fullRefresh" value="1"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="eight columns">
+          <label>Message</label>
+          <input class="u-full-width" type="text" name="showMessage"/>
+        </div>
+        <div class="four columns">
+          <label>POI Type</label>
+          <select class="u-full-width" name="poiType">
+            <option value="geo">geo</option>
+            <option value="vision">vision</option>
+          </select>
+        </div>
+      </div>
     </form>
     {{/if}}
 
     {{#if object}}
     <form id="new" method="post" action="./">
-      <label>Content Type</label>
-      <input type='text' name='contentType'/>
-      <label>URL</label>
-      <input type='url' name='url'/>
-      <label>Size</label>
-      <input type='number' name='size'/>
-      <label>Preview Image</label>
-      <input type='text' name='previewImage'/>
-      <input type='hidden' name='poiID' value='{{poiID}}'/>
+      <div class="row">
+        <div class="row">
+          <div class="four columns">
+            <label>Content Type</label>
+            <input class="u-full-width" type='text' name='contentType'/>
+          </div>
+          <div class="eight columns">
+            <label>URL</label>
+            <input class="u-full-width" type='url' name='url'/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="four columns">
+            <label>Size</label>
+            <input class="u-full-width" type='number' name='size'/>
+          </div>
+          <div class="eight columns">
+            <label>Preview Image</label>
+            <input class="u-full-width" type='text' name='previewImage'/>
+          </div>
+          <input class="u-full-width" type='hidden' name='poiID' value='{{poiID}}'/>
+        </div>
+      </div>
     </form>
     {{/if}}
 
     {{#if transform}}
     <form id="new" method="post" action="./">
+      <div class="row">
+        <div class="two columns">
       <label>Relative?</label>
       <input type='checkbox' name='rel' value="1"/>
+      </div><div class="ten columns">
       <label>Angle</label>
-      <input type='number' name='angle'/>
+      <input class="u-full-width" type='number' name='angle'/>
+      </div></div>
+      <div class="row">
       <label>Rotation</label>
-      <input type='number' name='rotate_x' placeholder='x'/>
-      <input type='number' name='rotate_y' placeholder='y'/>
-      <input type='number' name='rotate_z' placeholder='z'/>
+      <div class="row">
+        <div class="four columns">
+      <input class="u-full-width" type='number' name='rotate_x' placeholder='x'/>
+    </div><div class="four columns">
+      <input class="u-full-width" type='number' name='rotate_y' placeholder='y'/>
+      </div><div class="four columns">
+      <input class="u-full-width" type='number' name='rotate_z' placeholder='z'/>
+    </div></div><div class="row">
       <label>Translation</label>
-      <input type='number' name='translate_x' placeholder='x'/>
-      <input type='number' name='translate_y' placeholder='y'/>
-      <input type='number' name='translate_z' placeholder='z'/>
+      <div class="row">
+        <div class="four columns">
+      <input class="u-full-width" type='number' name='translate_x' placeholder='x'/>
+      </div><div class="four columns">
+      <input class="u-full-width" type='number' name='translate_y' placeholder='y'/>
+      </div><div class="four columns">
+      <input class="u-full-width" type='number' name='translate_z' placeholder='z'/>
+    </div></div><div class="row">
       <label>Scale</label>
-      <input type='number' name='scale_x' placeholder='x'/>
-      <input type='number' name='scale_y' placeholder='y'/>
-      <input type='number' name='scale_z' placeholder='z'/>
-      <input type='number' name='scale' placeholder='uniform'/>
+      <div class="row">
+        <div class="three columns">
+      <input class="u-full-width" type='number' name='scale_x' placeholder='x'/>
+    </div><div class="three columns">
+      <input class="u-full-width" type='number' name='scale_y' placeholder='y'/>
+    </div><div class="three columns">
+      <input class="u-full-width" type='number' name='scale_z' placeholder='z'/>
+    </div><div class="three columns">
+      <input class="u-full-width" type='number' name='scale' placeholder='uniform'/>
       <input type='hidden' name='poiID' value='{{poiID}}'/>
+    </div></div></div>
     </form>
     {{/if}}
 
     {{#if animation}}
     <form id="new" method="post" action="./">
+      <div class="row">
+        <div class="three columns">
       <label>Event</label>
-      <select name='event'>
+      <select class="u-full-width" name='event'>
       <option value='onCreate'>onCreate</option>
       <option value='onUpdate'>onUpdate</option>
       <option value='onFocus'>onFocus</option>
       <option value='onClick'>onClick</option>
       <option value='onDelete'>onDelete</option>
     </select>
+  </div><div class="three columns">
       <label>Type</label>
-      <select name='type'>
+      <select class="u-full-width" name='type'>
       <option value='translate'>translate</option>
       <option value='rotate'>rotate</option>
       <option value='scale'>scale</option>
     </select>
+    </div><div class="three columns">
       <label>Length</label>
-      <input type='number' name='length'/>
+      <input class="u-full-width" type='number' name='length'/>
+      </div><div class="three columns">
       <label>Delay</label>
-      <input type='number' name='delay'/>
+      <input class="u-full-width" type='number' name='delay'/>
+    </div></div>
+
+      <div class="row">
+        <div class="three columns">
       <label>Interpolation</label>
-      <select name='interpolation'>
+      <select class="u-full-width" name='interpolation'>
       <option value='linear'>linear</option>
       <option value='accelerateDecelerate'>accelerateDecelerate</option>
       <option value='accelerate'>accelerate</option>
@@ -97,135 +157,195 @@
       <option value='anticipate'>anticipate</option>
       <option value='overshoot'>overshoot</option>
     </select>
+    </div><div class="three columns">
       <label>Interpolation Param</label>
-      <input name='interpolationParam' type='number'/>
+      <input class="u-full-width" name='interpolationParam' type='number'/>
+    </div><div class="one column">
       <label>Persist</label>
-      <input name='persist' type='checkbox' value="1"/>
+      <input class="u-full-width" name='persist' type='checkbox' value="1"/>
+    </div><div class="one column">
       <label>Repeat</label>
-      <input name='repeat' type='checkbox' value="1"/>
+      <input class="u-full-width" name='repeat' type='checkbox' value="1"/>
+    </div><div class="two columns">
       <label>From</label>
-      <input name='from' type='number'/>
+      <input class="u-full-width" name='from' type='number'/>
+    </div><div class="two columns">
       <label>To</label>
-      <input name='to' type='number'/>
+      <input class="u-full-width" name='to' type='number'/>
+    </div></div>
+
+      <div class="row">
       <label>Axis</label>
-      <input name='axis_x' type='number' placeholder='x'/>
-      <input name='axis_y' type='number' placeholder='y'/>
-      <input name='axis_z' type='number' placeholder='z'/>
+      <div class="row">
+        <div class="four columns">
+      <input class="u-full-width" name='axis_x' type='number' placeholder='x'/>
+      </div><div class="four columns">
+      <input class="u-full-width" name='axis_y' type='number' placeholder='y'/>
+      </div><div class="four columns">
+      <input class="u-full-width" name='axis_z' type='number' placeholder='z'/>
       <input type='hidden' name='poiID' value='{{poiID}}'/>
+    </div></div></div>
     </form>
     {{/if}}
 
     {{#if action}}
     <form id="new" method="post" action="./">
+      <div class="row">
+        <div class="four columns">
       <label>URI</label>
-      <input name='uri' type='text'/>
+      <input class="u-full-width" name='uri' type='text'/>
+    </div><div class="four columns">
       <label>Label</label>
-      <input name='label' type='text'/>
+      <input class="u-full-width" name='label' type='text'/>
+    </div><div class="four columns">
       <label>Content Type</label>
-      <input name='contentType' type='text'/>
+      <input class="u-full-width" name='contentType' type='text'/>
+    </div></div>
+
+      <div class="row">
+        <div class="four columns">
       <label>Method</label>
-      <select name='method'>
+      <select class="u-full-width" name='method'>
       <option value='GET'>GET</option>
       <option value='POST'>POST</option>
     </select>
+    </div><div class="four columns">
       <label>Parameters</label>
-      <input name='params' type='text'/>
+      <input class="u-full-width" name='params' type='text'/>
+      </div><div class="four columns">
       <label>Activity Type</label>
-      <input name='activityType' type='number'/>
+      <input class="u-full-width" name='activityType' type='number'/>
+    </div></div>
+    <div class="row">
+      <div class="one column">
       <label>Show Activity?</label>
       <input name='showActivity' type='checkbox' value="1"/>
+    </div><div class="two columns">
       <label>Auto Trigger Only?</label>
       <input name='autoTriggerOnly' type='checkbox' value="1"/>
+      </div><div class="eight columns">
       <label>Activity Message</label>
-      <input name='activityMessage' type='text'/>
+      <input class="u-full-width" name='activityMessage' type='text'/>
+      </div><div class="one column">
       <label>Auto Trigger</label>
       <input name='autoTrigger' type='checkbox' value="1"/>
       <input type='hidden' name='poiID' value='{{poiID}}'/>
+    </div></div>
     </form>
     {{/if}}
 
     {{#if poi}}
     <form id="new" method="post" action="./">
+      <div class="row">
+        <div class="row">
+          <label>Layer ID</label>
+          {{#if layerID}}
+          <input type="number" name="layerID" value="{{layerID}}"/>
+          {{else}}
+          <input type="number" name="layerID"/>
+          {{/if}}
+        </div>
+        <div class="row">
+          <div class="row">
+          <h5>Object</h5>
+          <button form="poi-object-form" table="object" class="form-toggle"><i class="fa fa-cube"></i> Add Object</button>
+          <div id="poi-object-form-container" class="optional-form-container">
 
-      <label>Layer ID</label>
-      {{#if layerID}}
-      <input type="number" name="layerID" value="{{layerID}}"/>
-      {{else}}
-      <input type="number" name="layerID"/>
-      {{/if}}
-
-      <label>Object</label>
-      <button form="poi-object-form" table="object" class="form-toggle"><i class="fa fa-cube"></i> Add Object</button>
-      <div id="poi-object-form-container" class="optional-form-container">
-
-      </div>
-
-      <label>Transform</label>
-      <button form="poi-transform-form" table="transform" class="form-toggle"><i class="fa fa-arrows"></i> Add Transform</button>
-      <div id="poi-transform-form-container" class="optional-form-container">
+          </div></div>
+          <div class="row">
+          <h5>Transform</h5>
+          <button form="poi-transform-form" table="transform" class="form-toggle"><i class="fa fa-arrows"></i> Add Transform</button>
+          <div id="poi-transform-form-container" class="optional-form-container">
 
 
-      </div>
+          </div></div>
+          <div class="row">
+          <h5>Animations</h5>
+          <button form="poi-animation-form" table="animation" class="form-toggle"><i class="fa fa-play-circle-o"></i> Add Animation</button>
+          <div id="poi-animation-form-container" class="optional-form-container">
 
-      <label>Animations</label>
-      <button form="poi-animation-form" table="animation" class="form-toggle"><i class="fa fa-play-circle-o"></i> Add Animation</button>
-      <div id="poi-animation-form-container" class="optional-form-container">
+          </div></div>
+          <div class='row'>
+          <h5>Actions</h5>
+          <button form="poi-action-form" table="action" class="form-toggle"><i class="fa fa-hand-pointer-o"></i> Add Action</button>
+          <div id="poi-action-form-container" class="optional-form-container">
 
-      </div>
-
-      <label>Actions</label>
-      <button form="poi-action-form" table="action" class="form-toggle"><i class="fa fa-hand-pointer-o"></i> Add Action</button>
-      <div id="poi-action-form-container" class="optional-form-container">
-
-      </div>
-
-      <label>POI Type</label>
-      <select id="select-poitype" name="poiType">
-        <option value="geo" selected>geo</option>
-        <option value="vision">vision</option>
-      </select>
-
-      <div id="geo-poi-params-container">
-        <label>Geolocation</label>
-        <input type="number" name="lat"><input type="number" name="lon">
-
-        <label>Title</label>
-        <input type="text" name="title">
-
-        <label>Description</label>
-        <input type="text" name="description">
-
-        <label>Footnote</label>
-        <input type="text" name="footnote">
-
-        <label>Image URL</label>
-        <input type="url" name="imageURL">
-
-        <label>Show Small Brief Information Widget?</label>
-        <input type="checkbox" name="showSmallBiw" checked value="1">
-
-        <label>Show Brief Information Widget on click?</label>
-        <input type="checkbox" name="showBiwOnClick" checked value="1">
-
-        <label>Brief Information Widget Style</label>
-        <select name="biwStyle">
-          <option value="classic">classic</option>
-          <option value="collapsed">collapsed</option>
-        </select>
-
-        <label>Icon URL</label>
-        <input type="url" name="icon_url">
-
-        <label>Icon Type</label>
-        <input type="number" name="icon_type" value="0">
-
-        <label>In Focus</label>
-        <input type="checkbox" name="inFocus">
-      </div>
-
-      <div id="vision-poi-params-container">
-        <label>Reference Image</label>
-        <input type="text" name="referenceImage">
+          </div></div>
+        </div>
+        <div class="row">
+          <label>POI Type</label>
+          <select id="select-poitype" name="poiType">
+            <option value="geo" selected>geo</option>
+            <option value="vision">vision</option>
+          </select>
+        </div>
+        <div class="row">
+          <div id="geo-poi-params-container">
+            <div class="row">
+              <div class="five columns">
+                <label>Geolocation</label>
+                <input type="number" name="lat"><input type="number" name="lon">
+              </div>
+              <div class="seven columns">
+                <label>Title</label>
+                <input class="u-full-width" type="text" name="title">
+              </div>
+            </div>
+            <div class="row">
+              <div class="seven columns">
+                <label>Description</label>
+                <input class="u-full-width" type="text" name="description">
+              </div>
+              <div class="five columns">
+                <label>Footnote</label>
+                <input class="u-full-width" type="text" name="footnote">
+              </div>
+            </div>
+            <div class="row">
+              <div class="six columns">
+                <label>Image URL</label>
+                <input class="u-full-width" type="url" name="imageURL">
+              </div>
+              <div class="two columns">
+                <label>Show Small Brief Information Widget?</label>
+                <input type="checkbox" name="showSmallBiw" checked value="1">
+              </div>
+              <div class="two columns">
+                <label>Show Brief Information Widget on click?</label>
+                <input type="checkbox" name="showBiwOnClick" checked value="1">
+              </div>
+              <div class="two columns">
+                <label>Brief Information Widget Style</label>
+                <select class="u-full-width" name="biwStyle">
+                  <option value="classic">classic</option>
+                  <option value="collapsed">collapsed</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="eight columns">
+                <label>Icon URL</label>
+                <input class="u-full-width" type="url" name="icon_url">
+              </div>
+              <div class="two columns">
+                <label>Icon Type</label>
+                <input class="u-full-width" type="number" name="icon_type" value="0">
+              </div>
+              <div class="two columns">
+                <label>In Focus</label>
+                <input type="checkbox" name="inFocus">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="twelve columns">
+            <div id="vision-poi-params-container">
+              <label>Reference Image</label>
+              <input class="u-full-width" type="text" name="referenceImage">
+            </div>
+          </div>
+        </div>
       </div>
 
     </form>

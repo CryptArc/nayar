@@ -23,7 +23,7 @@
       <label>Layer ID</label>
       <p>{{poi.layerID}}</p>
 
-      <label>Object</label>
+      <h5>Object</h5>
       <button {{#if object.id}}disabled{{/if}} add="object" poi-id="{{poi.id}}" class="button-primary top-add add">
         <i class="fa fa-plus-square-o"></i> Add Object
       </button>
@@ -61,7 +61,7 @@
       {{else}}
       <p>No object has been assigned to this POI.</p>
       {{/if}}
-      <label>Transform</label>
+      <h5>Transform</h5>
       <button add="transform" {{#if transform.id}}disabled{{/if}} poi-id="{{poi.id}}" class="button-primary top-add add">
         <i class="fa fa-plus-square-o"></i> Add Transform
       </button>
@@ -107,7 +107,7 @@
       {{else}}
       <p>No transform has been assigned to this POI.</p>
       {{/if}}
-      <label>Animations</label>
+      <h5>Animations</h5>
       <button add="animation" poi-id="{{poi.id}}" class="button-primary top-add add">
         <i class="fa fa-plus-square-o"></i> Add Animation
       </button>
@@ -172,7 +172,7 @@
       <p>No animations have been assigned to this POI.</p>
       {{/if}}
 
-      <label>Actions</label>
+      <h5>Actions</h5>
       <button add="action" poi-id="{{poi.id}}" class="button-primary top-add add">
         <i class="fa fa-plus-square-o"></i> Add Action
       </button>

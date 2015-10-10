@@ -34,6 +34,18 @@
                   "length": "255",
                   "value": null,
                   "options": "NOT NULL"
+                },
+                "role": {
+                  "type": "enum",
+                  "length": null,
+                  "value": "'admin','user'",
+                  "options": "DEFAULT 'user'"
+                },
+                "active": {
+                  "type": "tinyint",
+                  "length": "1",
+                  "value": null,
+                  "options": "DEFAULT '0'"
                 }
               }
             },
@@ -247,6 +259,12 @@
                         "length": null,
                         "value": "'geo','vision'",
                         "options": "NOT NULL"
+                    },
+                    "userID": {
+                      "type": "int",
+                      "length": "11",
+                      "value": null,
+                      "options": "DEFAULT NULL"
                     },
                     "id": {
                         "type": "int",

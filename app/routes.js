@@ -21,6 +21,9 @@ module.exports = function(app){
   var config = jsf.readFileSync(path.join(__dirname, '../lib/config.json'));
 
   var DEFAULTS = {
+    user: { username: '',
+          role: 'user',
+          active: '0'},
     layer: { layer: '',
            refreshInterval: '0',
            fullRefresh: '0',
@@ -82,6 +85,14 @@ module.exports = function(app){
     }
   });
 
+  hbs.registerHelper('ifeq', function(x, y, options){
+    if(x === y){
+      return options.fn(this);
+    } else {
+      return options.inverse(this);
+    }
+  });
+
   hbs.registerHelper('breadcrumbs', function(bcs, table){
     var markup = "<p class='breadcrumbs'><a href='/layers/'>Layers</a> "+
     "<i class='fa fa-angle-double-right'></i> ";
@@ -132,7 +143,9 @@ module.exports = function(app){
   app.get('/register', function(req, res){
     var locals = {user: null, message: null, locked: false};
     nayar.do({table:'User', action:'get'}, function(err, rows){
-      if(rows.length > 0) locals.locked = true;
+      if(rows.length > 0){
+        locals.locked = true;
+      }
       if(req.user) locals.user = req.user;
       if(req.message) locals.message = req.message;
       res.render('register.hbs', locals, function renderCallback(err, html){
@@ -153,7 +166,12 @@ module.exports = function(app){
   });
 
   app.get('/layers/', protect, function(req, res){
-    nayar.do({table:'Layer', action:'get'}, function(err, rows){
+    var query = {table:'Layer', action:'get'}
+    if(req.user.role === 'user'){
+      query.userID = req.user.id;
+    }
+    nayar.do(query,
+    function(err, rows){
       var locals = {layers: rows, error: err};
       res.render('layers.hbs', locals, function renderCallback(err, html){
         if(err){
@@ -322,7 +340,14 @@ module.exports = function(app){
   });
 
   app.get('/help', function(req, res){
-
+    res.render('help.hbs', {user: req.user},
+    function renderCallback(err, html){
+      if(err){
+        console.error(err);
+        res.status(500).send(errortext);
+      }
+      res.send(html);
+    });
   });
 
   app.get('/new/:table', protect, function(req, res){
@@ -372,6 +397,7 @@ module.exports = function(app){
         }
       });
       query = _.assign(query, req.body);
+      if(req.params.table === 'layer') query.userID = req.user.id;
     }
     if(req.params.table !== 'poi'){
       nayar.do(query, function(err, results){
@@ -483,6 +509,10 @@ module.exports = function(app){
     };
   };
 
+  app.get('/user/:id', protect, adminprotect, function(req,res,next){
+    next();
+  });
+
   app.get('/:table/:id', protect, function (req, res) {
     var query = { table: _.capitalize(req.params.table),
                   action: 'get',
@@ -548,6 +578,19 @@ module.exports = function(app){
             }
           });
         });
+      });
+    } else if(req.params.table === 'animation' ||
+           req.params.table === 'action' || req.params.table === 'user') {
+      var query = { table: _.capitalize(req.params.table),
+                action: 'delete',
+                id: req.params.id };
+      nayar.do(query, function(err, results){
+        if(err){
+          console.error(err);
+          res.status(500).send(errortext);
+        } else {
+          res.redirect("./");
+        }
       });
     } else if(req.params.table === 'poi'){
       // delete all related objects, transforms, actions and animations
@@ -629,6 +672,19 @@ module.exports = function(app){
 
   });
 
+  app.get('/users/', protect, adminprotect, function(req, res){
+    nayar.do({table:'User', action:'get'}, function(err, rows){
+      var locals = {users: rows, error: err};
+      res.render('users.hbs', locals, function renderCallback(err, html){
+        if(err){
+          console.error(err);
+          res.status(500).send(errortext);
+        }
+        res.send(html);
+      });
+    });
+  });
+
   app.get('/', function(req, res){
     var locals = {user: null};
     if(req.user) locals.user = req.user;
@@ -685,6 +741,8 @@ module.exports = function(app){
           return cb(bc);
         })
       });
+    } else if(table === 'user'){
+      cb(null);
     }
   };
 
@@ -727,8 +785,16 @@ module.exports = function(app){
   };
 
   function protect(req, res, next){
-    if(!req.user){
+    if(!req.user || !req.user.active){
       res.redirect('/login');
+    } else {
+      next();
+    }
+  };
+
+  function adminprotect(req, res, next){
+    if(req.user.role !== "admin"){
+      res.redirect('/layers');
     } else {
       next();
     }

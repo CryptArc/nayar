@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--
+  nayar/app/templates/index.handlebars
+  https://github.com/thomasrstorey/nayar
+
+  Copyright (c) 2015 thomasrstorey
+  Licensed under the MIT license.
+-->
+<html>
+  {{> head}}
+    <div class="row">
+      <h2>User: {{username}}</h2>
+      <p class='breadcrumbs'><a class='breadcrumb-link' href='/users/'>Users</a>
+      <i class='fa fa-angle-double-right'></i> <a class='breadcrumb-link' href='/user/{{id}}'>{{username}}</a></p>
+      <button id="top-save" class="save-button">
+            <i class="fa fa-floppy-o"></i> Save
+      </button>
+    </div>
+    <form id='update' method="post" action="/user/{{id}}">
+      <div class="row">
+        <div class="one column">
+          <label> ID: </label>
+          <p>{{id}}</p>
+        </div>
+        <div class="eleven columns">
+          <label>Username</label>
+          <input class="u-full-width" type='text' name='username' value="{{username}}"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="two-thirds column">
+          <label>Role</label>
+          <input class="u-full-width" type='text' name='role' value="{{role}}"/>
+        </div>
+        <div class="one-third column">
+          <label>Active</label>
+          <input type='checkbox' name='active' {{#if active}} checked {{/if}}/>
+        </div>
+      </div>
+    </form>
+    <div id="save-row" class="row">
+      <button id="bottom-save" class="save-button">
+            <i class="fa fa-floppy-o"></i> Save
+      </button>
+    </div>
+  {{> foot}}
+</html>

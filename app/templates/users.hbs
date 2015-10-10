@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!--
+  nayar/app/templates/index.handlebars
+  https://github.com/thomasrstorey/nayar
+
+  Copyright (c) 2015 thomasrstorey
+  Licensed under the MIT license.
+-->
+<html>
+  {{> head}}
+    <div class="row">
+      <h2>Users</h2>
+    {{#if users}}
+    <table>
+      <tr id="header-row">
+        <th>ID</th><th>Username</th><th>Role</th><th>Active</th><th>Delete</th>
+      </tr>
+    {{#each users}}
+      <tr>
+        <td class="data-link" table="user" data-id="{{this.id}}">{{this.id}}</td>
+        <td class="data-link" table="user" data-id="{{this.id}}">{{this.username}}</td>
+        <td class="data-link" table="user" data-id="{{this.id}}">{{this.role}}</td>
+        <td class="data-link" table="user" data-id="{{this.id}}">{{this.active}}</td>
+        <td ><i class="fa fa-trash delete-row" table="user" data-id="{{this.id}}"></i></td>
+      </tr>
+    {{/each}}
+    </table>
+    {{else}}
+    <p><strong>No users yet.</strong></p>
+    {{/if}}
+    </div>
+  {{> foot}}
+</html>

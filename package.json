@@ -1,7 +1,7 @@
 {
   "name": "nayar",
   "description": "library and API wrapper for Layar webservices providing POI data for geo and vision layers",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "homepage": "https://github.com/thomasrstorey/nayar",
   "author": {
     "name": "thomasrstorey",

@@ -59,6 +59,10 @@ tr:hover {
   padding-top: 20px;
 }
 
+.optional-form-container {
+  margin-bottom: 20px;
+}
+
 #top-save {
   float: right;
 }
@@ -93,5 +97,9 @@ button:disabled:hover{
 }
 
 .breadcrumb-link {
+  text-decoration: none;
+}
+
+#return-link {
   text-decoration: none;
 }
