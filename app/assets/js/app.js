@@ -10,7 +10,9 @@
 // assign click functions by class, use id for customization
 
 $(document).ready(function(){
-
+  $('input[type=number]').each(function () {
+    $(this).attr("step", "any");
+  });
   $(".add").click(function(event){
     var addobj = {};
     addobj.table = $(this).attr("add");
