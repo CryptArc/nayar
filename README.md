@@ -2,6 +2,31 @@
 
 library and API wrapper for Layar webservices providing POI data for geo and vision layers
 
+##Installation
+
+###Prerequisites
+
+* node, npm
+* mysql
+
+###Install
+
+* `git clone https://github.com/thomasrstorey/nayar.git`
+* `cd nayar`
+* edit `db/config.json` with your mysql user credentials.
+* `node app/server.js`
+* navigate to yoururl.com:8188 to see the dashboard, create an admin user
+
+##Usage
+
+Please refer to the <a href="https://www.layar.com/documentation/browser/api/">Layar API Documentation</a> for information on how to set up your layers.
+
+###Admin
+
+The first user is the admin. Before any subsequent users can use the Layers page, the admin has to set them to "Active" via the Users page.
+
+##Info
+
 ###Version
   <p>1.1.2</p>
 ###Recent Changes
