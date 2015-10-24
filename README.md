@@ -2,66 +2,24 @@
 
 library and API wrapper for Layar webservices providing POI data for geo and vision layers
 
-## Usage
-1. Install the module with: `npm install nayar`
-* setup your database with the included db.sql file
-* load your data into the databse however works for you
-* configure nayar
-* call getPOIs to with an object of Layar getPOIs request parameters:
+###Version
+  <p>1.1.2</p>
+###Recent Changes
 
-```javascript
-var nayar = require('nayar');
-nayar.setConfig({user: 'root', pass: 'pass', db: 'nayar_db'});
-//...if using express for instance...
-app.get('/layar', function(req, res){
-  nayar.getPOIs(req.query, function(err, resjson){
-    if(err) console.error(error);
-    res.json(resjson);
-  });
-});
-```
+* Improved error handling. If a database error occurs, the message will propagate up to the user with a helpful error code that can help diagnose the problem.
+* Improved stability
+* User system - first user is admin, subsequent users are users. Admin has elevated privileges, like the ability to see/edit any layer and the ability to delete and activate other users. Users can only see their own layers and cannot manage user info.
+* All forms are now formatted to fit on screen more nicely and be more readable.
 
-## Documentation
-### nayar Methods
-
-#### setConfig
-```javascript
-nayar.setConfig([config object]);
-```
-
-#### getConfig
-```javascript
-nayar.getConfig();
-//=> {user: 'user', pass: 'pass', db: 'db', port:'8030'}
-```
-
-#### getPOIs
-```javascript
-nayar.getPOIs(req.query, function(err, resjson){
-  console.dir(resjson);
-});
-//=>{ layer: 'geotest',
-//     hotspots:
-//      [ { id: 'geo_test',
-//          imageURL: 'http://trstorey.sysreturn.net/lib/img/bioav.png',
-//          text:
-//           { title: 'nayartest',
-//             description: 'testing nayar',
-//             footnote: 'author: thomasrstorey' },
-//          anchor: { geolocation: { lat: 40.692842, lon: -73.931183 } } } ],
-//     errorCode: 0,
-//     errorString: 'ok' }
-
-```
-
-## Examples
-_(Coming soon)_
-
-## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
-
-## Release History
-_(Nothing yet)_
+###Repository
+<a href="http://github.com/thomasrstorey/nayar/">github</a>
+###Contributors
+<p>Thomas R Storey | <a href="http://github.com/thomasrstorey/">github</a> <a href="mailto:storey.thomas@gmail.com">email</a></p>
+###Sponsors>
+<p>Kristin Lucas | <a href="http://kristinlucas.com/">website</a> </p>
+###Acknowledgements
+<p>Thanks so much to Kristin for providing the impetus, inspiration, testing, and funding for this project!</p>
+</div>
 
 ## License
 Copyright (c) 2015 thomasrstorey  
