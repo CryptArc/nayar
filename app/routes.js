@@ -143,15 +143,13 @@ module.exports = function(app){
   app.get('/register', function(req, res){
     var locals = {user: null, message: null, locked: false};
     nayar.do({table:'User', action:'get'}, function(err, rows){
+      if(err) return res.render('error.hbs', {error: err.toString()});
       if(rows.length > 0){
         locals.locked = true;
       }
       if(req.user) locals.user = req.user;
       if(req.message) locals.message = req.message;
-      res.render('register.hbs', locals, function renderCallback(err, html){
-        if(err) res.status(500).send(errortext);
-        res.send(html);
-      });
+      res.render('register.hbs', locals);
     });
   });
 
@@ -159,10 +157,7 @@ module.exports = function(app){
     var locals = {user: null, message: null};
     if(req.user) locals.user = req.user;
     if(req.message) locals.message = req.message;
-    res.render('login.hbs', locals, function renderCallback(err, html){
-      if(err) res.status(500).send(errortext);
-      res.send(html);
-    });
+    res.render('login.hbs', locals);
   });
 
   app.get('/layers/', protect, function(req, res){
@@ -173,13 +168,7 @@ module.exports = function(app){
     nayar.do(query,
     function(err, rows){
       var locals = {layers: rows, error: err};
-      res.render('layers.hbs', locals, function renderCallback(err, html){
-        if(err){
-          console.error(err);
-          res.status(500).send(errortext);
-        }
-        res.send(html);
-      });
+      res.render('layers.hbs', locals);
     });
   });
 
@@ -188,6 +177,8 @@ module.exports = function(app){
                    action:'get',
                    id: req.params.id };
     nayar.do(query, function(err, layer){
+      if(err) return res.render('error.hbs', {error: err.toString()});
+      if(!layer.length) return res.render('error.hbs', {error: "Layer does not exist."});
       layer = layer[0];
       if(layer.poiType === 'geo'){
         layer.poiType = {geo:true, vision:false};
@@ -198,6 +189,7 @@ module.exports = function(app){
                 action:'get',
                 layerID: req.params.id };
       nayar.do(query, function(err, pois){
+        if(err) return res.render('error.hbs', {error: err.toString()});
         var counts = [];
         if(pois.length){
           pois.forEach(function(poi, key){
@@ -211,17 +203,9 @@ module.exports = function(app){
             // IIFE to close over poi value
             (function IIFE(){
               nayar.do(animQuery, function(err, anims){
-                if(err){
-                  console.error(err);
-                }
-                /*console.log("ANIMS");
-                console.dir(anims);*/
+                if(err) return res.render('error.hbs', {error: err.toString()});
                 nayar.do(actionQuery, function(err, actions){
-                  if(err){
-                    console.error(err);
-                  }
-                  /*console.log("ACTIONS");
-                  console.dir(actions);*/
+                  if(err) return res.render('error.hbs', {error: err.toString()});
                   counts.push({ id: poi.id,
                                 animationNum: anims.length,
                                 actionNum: actions.length });
@@ -241,17 +225,9 @@ module.exports = function(app){
                       locals.saved = true;
                     }
                     getBreadcrumbs(locals, 'layer', req.params.id,
-                    function(breadcrumbs){
+                    function(err, breadcrumbs){
                       locals.breadcrumbs = breadcrumbs;
-                      res.render('layer.hbs',
-                              locals,
-                              function renderCallback(err, html){
-                                if(err){
-                                  console.error(err);
-                                  res.status(500).send(errortext);
-                                }
-                                res.send(html);
-                      });
+                      res.render('layer.hbs', locals);
                     });
                   }
                 });
@@ -264,17 +240,9 @@ module.exports = function(app){
             locals.saved = true;
           }
           getBreadcrumbs(locals, 'layer',
-                    req.params.id, function(breadcrumbs){
+                    req.params.id, function(err, breadcrumbs){
             locals.breadcrumbs = breadcrumbs;
-            res.render('layer.hbs',
-                        locals,
-                        function renderCallback(err, html){
-                          if(err){
-                            console.error(err);
-                            res.status(500).send(errortext);
-                          }
-                          res.send(html);
-            });
+            res.render('layer.hbs', locals);
           });
         }
       });
@@ -286,6 +254,8 @@ module.exports = function(app){
                    action:'get',
                    id: req.params.id };
     nayar.do(query, function(err, poi){
+      if(err) return res.render('error.hbs', {error: err.toString()});
+      if (!poi.length) return res.render('error.hbs', {error: "That POI does not exist."});
       poi = poi[0];
       if(poi.poiType === 'geo'){
         poi.poiType = {geo:true, vision:false};
@@ -306,10 +276,16 @@ module.exports = function(app){
                         poiID: poi.id };
 
       nayar.do(animQuery, function(err, animations){
+        if(err) return res.render('error.hbs', {error: err.toString()});
         nayar.do(actionQuery, function(err, actions){
+          if(err) return res.render('error.hbs', {error: err.toString()});
           nayar.do(transQuery, function(err, transform){
+            if(err) return res.render('error.hbs', {error: err.toString()});
+            // if (!transform.length) return res.render('error.hbs', {error: "Transform does not exist."});
             transform = transform[0];
             nayar.do(objQuery, function(err, object){
+              if(err) return res.render('error.hbs', {error: err.toString()});
+              // if (!object.length) return res.render('error.hbs', {error: "Object does not exist."});
               object = object[0];
               var locals = { poi: poi,
                              object: object,
@@ -320,17 +296,10 @@ module.exports = function(app){
                 locals.saved = true;
               }
               getBreadcrumbs(locals, 'poi', req.params.id,
-              function(breadcrumbs){
+              function(err, breadcrumbs){
+                if(err) return res.render('error.hbs', {error: err.toString()});
                 locals.breadcrumbs = breadcrumbs;
-                res.render('poi.hbs',
-                            locals,
-                            function renderCallback(err, html){
-                              if(err){
-                                console.error(err);
-                                res.status(500).send(errortext);
-                              }
-                              res.send(html);
-                });
+                res.render('poi.hbs', locals);
               });
             });
           });
@@ -340,14 +309,7 @@ module.exports = function(app){
   });
 
   app.get('/help', function(req, res){
-    res.render('help.hbs', {user: req.user},
-    function renderCallback(err, html){
-      if(err){
-        console.error(err);
-        res.status(500).send(errortext);
-      }
-      res.send(html);
-    });
+    res.render('help.hbs', {user: req.user});
   });
 
   app.get('/new/:table', protect, function(req, res){
@@ -359,16 +321,7 @@ module.exports = function(app){
     }else if(req.query.layerID){
       locals.layerID = req.query.layerID;
     }
-    res.render('new.hbs',
-                locals,
-                function renderCallback(err, html){
-                  if(err){
-                    console.error(err);
-                    res.status(500).send(errortext);
-                  } else {
-                    res.send(html);
-                  }
-    });
+    res.render('new.hbs', locals);
   });
 
   app.post('/new/:table', protect, function(req, res){
@@ -401,23 +354,19 @@ module.exports = function(app){
     }
     if(req.params.table !== 'poi'){
       nayar.do(query, function(err, results){
-        if(err){
-          console.error(err);
-          res.status(500).send(errortext);
+        if(err) return res.render('error.hbs', {error: err.toString()});
+        if(req.params.table === 'object'
+        || req.params.table === 'transform') {
+          var updateq = { table: 'Poi',
+                     action: 'update',
+                     id: poiID };
+          updateq[req.params.table+"ID"] = results.insertId;
+          nayar.do(updateq, function(err, results){
+            res.redirect("/"+req.params.table
+            +"/"+updateq[req.params.table+"ID"]);
+          });
         } else {
-          if(req.params.table === 'object'
-          || req.params.table === 'transform') {
-            var updateq = { table: 'Poi',
-                       action: 'update',
-                       id: poiID };
-            updateq[req.params.table+"ID"] = results.insertId;
-            nayar.do(updateq, function(err, results){
-              res.redirect("/"+req.params.table
-              +"/"+updateq[req.params.table+"ID"]);
-            });
-          } else {
-            res.redirect("/"+req.params.table+"/"+results.insertId);
-          }
+          res.redirect("/"+req.params.table+"/"+results.insertId);
         }
       });
     }
@@ -443,25 +392,25 @@ module.exports = function(app){
       return (_.startsWith(key, 'object_') || _.startsWith(key,'transform_'))
       || (_.startsWith(key, 'action_') || _.startsWith(key, 'animation_'));
     }));
-    // first insert object and transform. Save insertIds from each insertion.
-    // then insert the poi, setting the object and transform ids appropriately.
-    // save the insertId from the poi as well.
-    // then insert the animations and actions, setting their poiIds appropriately.
     if(objq && !trnq){
       console.log("OBJECT QUERY NO TRANSFORM QUERY");
       nayar.do(objq, function(err, results){
+        if(err) return res.render('error.hbs', {error: err.toString()});
         objid = results.insertId;
         insertPOI(query, insertArrays);
       });
     } else if(trnq && !objq){
       nayar.do(trnq, function(err, results){
+        if(err) return res.render('error.hbs', {error: err.toString()});
         trnid = results.insertId;
         insertPOI(query, insertArrays);
       });
     } else if(trnq && objq){
       nayar.do(trnq, function(err, results){
+        if(err) return res.render('error.hbs', {error: err.toString()});
         trnid = results.insertId;
         nayar.do(objq, function(err, results){
+          if(err) return res.render('error.hbs', {error: err.toString()});
           objid = results.insertId;
           insertPOI(query, insertArrays);
         });
@@ -474,6 +423,7 @@ module.exports = function(app){
       q.objectID = objid;
       q.transformID = trnid;
       nayar.do(q, function(err, results){
+        if(err) return res.render('error.hbs', {error: err.toString()});
         var poiID = results.insertId;
         if(aniqs.length || actqs.length){
           cb(poiID, function(){
@@ -493,6 +443,7 @@ module.exports = function(app){
       aniqs.forEach(function(q, i){
         q.poiID = poiID;
         nayar.do(q, function(err, results){
+          if(err) return res.render('error.hbs', {error: err.toString()});
           if(++count === total){
             return cb();
           }
@@ -501,6 +452,7 @@ module.exports = function(app){
       actqs.forEach(function(q, i){
         q.poiID = poiID;
         nayar.do(q, function(err, results){
+          if(err) return res.render('error.hbs', {error: err.toString()});
           if(++count === total){
             return cb();
           }
@@ -518,23 +470,17 @@ module.exports = function(app){
                   action: 'get',
                   id: req.params.id };
     nayar.do(query, function(err, results){
+      if(err) return res.render('error.hbs', {error: err.toString()});
+      if(!results.length) return res.render('error.hbs',
+      {error: "That " + query.table + " does not exist."});
       var locals = results[0];
       if(req.query.saved){
         locals.saved = true;
       }
       getBreadcrumbs(locals, req.params.table, req.params.id,
-        function(breadcrumbs){
+        function(err, breadcrumbs){
         locals.breadcrumbs = breadcrumbs;
-        res.render(req.params.table+'.hbs',
-                   locals,
-                   function renderCallback(err, html){
-                     if(err){
-                       console.error(err);
-                       res.status(500).send(errortext);
-                     } else {
-                       res.send(html);
-                     }
-        });
+        res.render(req.params.table+'.hbs', locals);
       });
     });
   });
@@ -549,9 +495,9 @@ module.exports = function(app){
         o[k] = '1';
       }
     });
-    console.dir(req.body);
     _.assign(query, req.body);
     nayar.do(query, function(err, results){
+      if(err) return res.render('error.hbs', {error: err.toString()});
       res.redirect('/'+req.params.table+'/'+req.params.id+'?saved=1');
     });
   });
@@ -563,19 +509,19 @@ module.exports = function(app){
       var query = { table: 'Poi', action: 'get' };
       query[req.params.table+"ID"] = req.params.id;
       nayar.do(query, function(err, result){
+        if(err) return res.render('error.hbs', {error: err.toString()});
+        if(!result.length) return res.render('error.hbs',
+        {error: "That " + query.table + " does not exist."});
         query = { table: 'Poi', action: 'update', id: result[0].id };
         query[req.params.table+"ID"] = null;
         nayar.do(query, function(err, result){
+          if(err) return res.render('error.hbs', {error: err.toString()});
           query = { table: _.capitalize(req.params.table),
                         action: 'delete',
                         id: req.params.id };
           nayar.do(query, function(err, results){
-            if(err){
-              console.error(err);
-              res.status(500).send(errortext);
-            } else {
-              res.redirect("./");
-            }
+            if(err) return res.render('error.hbs', {error: err.toString()});
+            res.redirect("./");
           });
         });
       });
@@ -585,17 +531,16 @@ module.exports = function(app){
                 action: 'delete',
                 id: req.params.id };
       nayar.do(query, function(err, results){
-        if(err){
-          console.error(err);
-          res.status(500).send(errortext);
-        } else {
+        if(err) return res.render('error.hbs', {error: err.toString()});
           res.redirect("./");
-        }
       });
     } else if(req.params.table === 'poi'){
       // delete all related objects, transforms, actions and animations
       var query = { table: 'Poi', action: 'get', id: req.params.id };
       nayar.do(query, function(err, result){
+        if(err) return res.render('error.hbs', {error: err.toString()});
+        if(!result.length) return res.render('error.hbs',
+        {error: "That " + query.table + " does not exist."});
         var deleteqs = [{ table: 'Object',
                         action: 'delete',
                         id: result[0].objectID },
@@ -610,24 +555,24 @@ module.exports = function(app){
                         poiID: req.params.id }];
         _.each(deleteqs, function(v, k){
           nayar.do(v, function(err, result){
+            if(err) return res.render('error.hbs', {error: err.toString()});
           });
         });
         query = { table: _.capitalize(req.params.table),
                       action: 'delete',
                       id: req.params.id };
         nayar.do(query, function(err, results){
-          if(err){
-            console.error(err);
-            res.status(500).send(errortext);
-          } else {
-            res.redirect("./");
-          }
+          if(err) return res.render('error.hbs', {error: err.toString()});
+          res.redirect("./");
         });
       });
     } else if(req.params.table === 'layer'){
       // delete all related pois, and their objects, transforms...etc
       var query = { table: 'Layer', action: 'get', id: req.params.id };
       nayar.do(query, function(err, result){
+        if(err) return res.render('error.hbs', {error: err.toString()});
+        if(!result.length) return res.render('error.hbs',
+        {error: "That " + query.table + " does not exist."});
         // this will delete all the POIs attached to the layer,
         // but we need to go through all of them and
         var deleteqs = [{ table: 'Poi',
@@ -637,6 +582,7 @@ module.exports = function(app){
                   action: 'get',
                   layerID: result[0].id };
         nayar.do(query, function(err, result){
+          if(err) return res.render('error.hbs', {error: err.toString()});
           _.each(result, function(v, k){
             deleteqs.push({ table: 'Object',
                             action: 'delete',
@@ -659,12 +605,8 @@ module.exports = function(app){
                         action: 'delete',
                         id: req.params.id };
           nayar.do(query, function(err, results){
-            if(err){
-              console.error(err);
-              res.status(500).send(errortext);
-            } else {
-              res.redirect("./");
-            }
+            if(err) return res.render('error.hbs', {error: err.toString()});
+            res.redirect("./");
           });
         });
       });
@@ -675,74 +617,75 @@ module.exports = function(app){
   app.get('/users/', protect, adminprotect, function(req, res){
     nayar.do({table:'User', action:'get'}, function(err, rows){
       var locals = {users: rows, error: err};
-      res.render('users.hbs', locals, function renderCallback(err, html){
-        if(err){
-          console.error(err);
-          res.status(500).send(errortext);
-        }
-        res.send(html);
-      });
+      res.render('users.hbs', locals);
     });
   });
 
   app.get('/', function(req, res){
     var locals = {user: null};
     if(req.user) locals.user = req.user;
-    res.render('index.hbs', locals, function renderCallback(err, html){
-      if(err) res.status(500).send(errortext);
-      res.send(html);
-    });
+    res.render('index.hbs', locals);
   });
 
   function getBreadcrumbs(locals, table, id, cb){
     if(table === 'layer'){
       process.nextTick(function(){
-        return cb({ layer: {name:locals.layer.layer, id:id} });
+        return cb(null, { layer: {name:locals.layer.layer, id:id} });
       });
     } else if(table === 'poi'){
       var q = { table: 'Layer', action: 'get', id: locals.poi.layerID };
       nayar.do(q, function(err, results){
+        if(err) return cb(err);
+        if (!results.length) return cb(new Error("POI has no parent Layer."));
         var layer = results[0];
         var bc = { layer: {name:layer.layer, id:layer.id },
                    poi: {name: "poi: "+ locals.poi.id,
                        id: locals.poi.id } };
-        cb(bc);
+        cb(null, bc);
       });
     } else if(table === 'object' || table === 'transform'){
         var Table = _.capitalize(table);
         var q = { table: 'Poi', action: 'get' };
         q[Table+"ID"] = id;
         nayar.do(q, function(err, results){
+          if(err) return cb(err);
+          if (!results.length) return cb(new Error(table + " has no parent POI."));
           var poi = results[0];
           if(poi){
             q = { table: 'Layer', action: 'get', id: poi.layerID };
             nayar.do(q, function(err, results){
+              if(err) return cb(err);
+              if (!results.length) return cb(new Error("POI's parent Layer does not exist."));
               var layer = results[0];
               var bc = { layer: {name: layer.layer, id: layer.id },
                          poi: {name: "poi: " + poi.id, id: poi.id } };
               bc[table] = { name: table+": "+id, id: id };
-              return cb(bc);
+              return cb(null, bc);
             });
           } else {
             // this object or transform is orphaned!
-            return cb({});
+            return cb(null, {});
           }
         });
     } else if(table === 'animation' || table === 'action'){
       var q = { table: 'Poi', action: 'get', id: locals.poiID};
       nayar.do(q, function(err, results){
+        if(err) return cb(err);
+        if (!results.length) return cb(new Error(table + " has no parent POI."));
         var poi = results[0];
         q = { table: 'Layer', action: 'get', id: poi.layerID };
         nayar.do(q, function(err, results){
+          if(err) return cb(err);
+          if (!results.length) return cb(new Error("POI's parent Layer does not exist."));
           var layer = results[0];
           var bc = { layer: { name: layer.layer, id: layer.id },
                      poi: { name: "poi: " + poi.id, id: poi.id } };
               bc[table] = { name: table + ": " + id, id: id };
-          return cb(bc);
+          return cb(null, bc);
         })
       });
     } else if(table === 'user'){
-      cb(null);
+      cb(null, null);
     }
   };
 

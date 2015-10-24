@@ -21,7 +21,11 @@ module.exports = function(passport){
 
   passport.deserializeUser(function(id, done){
     nayar.do({table:'User', action:'get', id: id}, function(err, rows){
-      done(err, rows[0]);
+      if(!rows.length || err){
+        done(err, false);
+      } else {
+        done(err, rows[0]);
+      }
     });
   });
 
