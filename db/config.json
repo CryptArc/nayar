@@ -3,7 +3,7 @@
         "connection": {
             "host": "localhost",
             "user": "root",
-            "password": "Alt0264Uml4ut",
+            "password": "",
             "database": "nayar_test",
             "connectionLimit": 100
         },
