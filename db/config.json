@@ -150,7 +150,7 @@
                     "type": {
                         "type": "enum",
                         "length": null,
-                        "value": "'scale','translate','rotate'",
+                        "value": "'scale','translate','rotate','opacity'",
                         "options": "NOT NULL"
                     },
                     "length": {

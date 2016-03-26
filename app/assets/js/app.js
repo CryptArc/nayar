@@ -179,6 +179,7 @@ function toggleForm(target, table){
           +    "<option value='translate'>translate</option>"
           +    "<option value='rotate'>rotate</option>"
           +    "<option value='scale'>scale</option>"
+          +    "<option value='opacity'>opacity</option>"
           +  "</select>"
           + "</div><div class='three columns'>"
           +  "<label>Length</label>"
