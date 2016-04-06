@@ -13,7 +13,7 @@ library and API wrapper for Layar webservices providing POI data for geo and vis
 
 * `git clone https://github.com/thomasrstorey/nayar.git`
 * `cd nayar`
-* edit `db/config.json` with your mysql user credentials.
+* edit `db/config.json` with your mysql user credentials and pre-initialized database name.
 * `node app/server.js`
 * navigate to yoururl.com:8188 to see the dashboard, create an admin user
 
@@ -28,9 +28,10 @@ The first user is the admin. Before any subsequent users can use the Layers page
 ##Info
 
 ###Version
-  <p>1.1.2</p>
+  <p>1.1.3</p>
 ###Recent Changes
 
+* Opacity animation added in accordance with Layar API v8.4
 * Improved error handling. If a database error occurs, the message will propagate up to the user with a helpful error code that can help diagnose the problem.
 * Improved stability
 * User system - first user is admin, subsequent users are users. Admin has elevated privileges, like the ability to see/edit any layer and the ability to delete and activate other users. Users can only see their own layers and cannot manage user info.
