@@ -11,7 +11,7 @@
     <div class="row">
       <h2>Layers</h2>
     {{#if layers}}
-    <button id="top-add" class="button-primary" onclick="addNew({table:'layer'});">
+    <button id="top-add-button" class="button-primary" onclick="addNew({table:'layer'});">
       <i class="fa fa-plus-square-o"></i> New Layer
     </button>
     <table>
@@ -30,7 +30,7 @@
     {{else}}
     <p><strong>No layers yet.</strong></p>
     {{/if}}
-    <button id="bottom-add" class="button-primary" onclick="addNew({table:'layer'});">
+    <button id="bottom-add-button" class="button-primary" onclick="addNew({table:'layer'});">
       <i class="fa fa-plus-square-o"></i> New Layer
     </button>
     </div>
